@@ -1,0 +1,18 @@
+{
+  "name": "Akıllı Tarla Mobil",
+  "short_name": "Akıllı Tarla",
+  "description": "Elegan Studios · Mobil tarla kontrolü",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0e1013",
+  "theme_color": "#0e1013",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "fav.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akıllı Tarla | Elegan Studios</title>
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+:root{--bg:#0e1013;--surface:#151820;--surface-2:#1b1f29;--line:#262b36;--line-2:#323847;--text:#e8eaee;--muted:#8d95a4;--accent:#7fb69a;--accent-ink:#0d1712;
+--blue:#7ea6d6;--green:#7fb69a;--red:#dc7f76;--yellow:#d9b564;
+--bg-color:var(--bg);--panel-bg:var(--surface);--border-color:var(--line);--text-main:var(--text);--text-muted:var(--muted);
+--font:"Inter","Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);margin:0;line-height:1.5;-webkit-font-smoothing:antialiased}
+.brand{display:flex;align-items:center;gap:12px;margin:0 0 24px}
+.brand-mark{flex:none;width:34px;height:34px;border-radius:4px 17px 4px 17px;background:var(--accent)}
+.brand h1{margin:0;font-size:20px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.brand p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.section-title{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:26px 0 12px}
+.brand+.section-title,.section-title:first-child{margin-top:0}
+.container{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px}
+.camera-box{width:100%;aspect-ratio:16/10;background:#0a0c10;border:1px solid var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.camera-box img{width:100%;height:100%;object-fit:cover;display:none}
+.camera-placeholder{color:var(--muted);font-size:13px;text-align:center;padding:12px}
+.data-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.data-card{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:16px}
+.data-card.full-width{grid-column:span 2}
+h3{margin:0 0 8px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.value{font-size:24px;font-weight:500;margin:0;letter-spacing:-.01em;font-variant-numeric:tabular-nums;transition:color .3s}
+.progress-bg{background:var(--line);height:6px;border-radius:3px;margin-top:14px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:var(--blue);transition:width .6s ease,background-color .3s;border-radius:3px}
+.controls{display:flex;flex-direction:column;gap:12px}
+.connect-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{font:inherit;font-size:14px;font-weight:500;padding:13px 16px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);border-radius:12px;cursor:pointer;width:100%;transition:background .2s,border-color .2s,transform .1s}
+button:hover:not(:disabled){background:#222735;border-color:#434a5d}
+button:active:not(:disabled){transform:scale(.985)}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.btn-blue,.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn-blue:hover:not(:disabled),.btn-primary:hover:not(:disabled){background:#92c4aa;border-color:#92c4aa}
+.btn-red{background:var(--red);border-color:var(--red);color:#241110;font-weight:600}
+.btn-red:hover:not(:disabled){background:#e5918a;border-color:#e5918a}
+.btn-outline{background:transparent;color:var(--text)}
+.btn-connected{background:rgba(127,182,154,.1)!important;border-color:rgba(127,182,154,.4)!important;color:var(--accent)!important}
+.btn-connected:before{content:"\2713  "}
+.auto-control-box{display:flex;justify-content:space-between;align-items:center;background:var(--surface-2);padding:12px 16px;border-radius:12px;border:1px solid var(--line)}
+.auto-text{font-size:14px;font-weight:500}
+.switch{position:relative;display:inline-block;width:46px;height:26px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:var(--line-2);transition:.25s;border-radius:34px}
+.slider:before{position:absolute;content:"";height:20px;width:20px;left:3px;bottom:3px;background:#fff;transition:.25s;border-radius:50%}
+input:checked+.slider{background:var(--accent)}
+input:checked+.slider:before{transform:translateX(20px)}
+input:focus-visible+.slider{outline:2px solid var(--blue);outline-offset:2px}
+input[type=text],input:not([type]){font:inherit}
+.footer{margin-top:24px;text-align:center;font-size:11px;color:#4a5163;letter-spacing:.14em}
+.text-blue{color:var(--blue)}.text-green{color:var(--green)}.text-red{color:var(--red)}.text-muted{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+body{padding:32px 24px;min-height:100vh}
+.main-layout{display:grid;grid-template-columns:1fr 360px;gap:24px;width:100%;max-width:1120px;margin:0 auto;align-items:start}
+.pan-tilt-panel{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:18px;margin:12px 0 0}
+.pan-tilt-panel h2{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;text-align:center}
+.pt-controls{display:grid;grid-template-columns:repeat(3,64px);gap:8px;justify-content:center}
+.pt-controls button{padding:0;height:48px;font-size:18px;background:var(--surface);border-radius:12px}
+.pt-controls .pt-home{font-size:12px;color:var(--accent)}
+.pt-help{font-size:12px;color:var(--muted);text-align:center;margin:14px 0 0}
+.sidebar{display:flex;flex-direction:column;gap:20px;position:sticky;top:24px}
+.qr-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px 22px;text-align:center}
+.qr-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;margin:0 auto 14px;background:rgba(127,182,154,.12);border:1px solid rgba(127,182,154,.3);color:var(--accent);font-size:22px}
+.qr-card h2{font-size:17px;font-weight:600;margin:0 0 6px;letter-spacing:-.01em}
+.qr-intro{color:var(--muted);font-size:13px;margin:0 0 16px}
+.qr-status{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-2);border-radius:100px;padding:6px 12px;color:var(--muted);font-size:12px;margin:0 auto 18px}
+.qr-status:before{content:"";width:7px;height:7px;border-radius:50%;background:#6b7385}
+.qr-status.online{border-color:rgba(127,182,154,.4);color:var(--accent);background:rgba(127,182,154,.08)}
+.qr-status.online:before{background:var(--accent)}
+.field-label{display:block;text-align:left;font-size:12px;font-weight:500;margin:0 0 6px;color:var(--text)}
+.qr-card input{display:block;width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--line-2);border-radius:10px;padding:11px 12px;font-size:14px}
+.qr-stage{display:flex;justify-content:center;margin:18px auto 14px}
+#qrcode{background:#fff;padding:14px;border-radius:14px;display:grid;place-items:center;min-height:220px;min-width:220px}
+#qrcode img,#qrcode canvas{display:block;max-width:100%;height:auto;border-radius:2px}
+.qr-caption{font-size:13px;color:var(--muted);margin:0 0 16px}
+.qr-caption strong{color:var(--text);font-weight:500}
+.qr-separator{border:0;border-top:1px solid var(--line);margin:16px 0}
+.qr-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 8px}
+.qr-actions button{font-size:12px;padding:10px 8px;border-radius:10px}
+.qr-copy-info{font-size:12px;min-height:16px;color:var(--accent);margin:6px 0}
+.peer-id-text{font-family:ui-monospace,Consolas,monospace;font-size:10px;color:#6b7385;word-break:break-all;margin:8px 0 0}
+.field-hint{color:var(--muted);font-size:12px;margin:8px 0 0}
+
+@media (max-width:560px){body{padding:14px 12px}.container{padding:20px}.connect-row{grid-template-columns:1fr}}
+
+.chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.chart-head h3{margin:0 0 2px}
+.chart-sub{margin:0;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px}
+.seg button{width:auto;padding:6px 12px;font-size:12px;border:0;background:transparent;color:var(--muted);border-radius:7px}
+.seg button:hover:not(:disabled){background:var(--surface-2);border:0;color:var(--text)}
+.seg button.on{background:#2a3040;color:var(--text)}
+.chart-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.chart-stats div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.chart-stats span{font-size:11px;color:var(--muted)}
+.chart-stats b{font-size:17px;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.chart-wrap{position:relative;height:230px;touch-action:pan-y;cursor:crosshair}
+.chart-wrap canvas{display:block;width:100%;height:100%}
+.chart-tip{position:absolute;pointer-events:none;background:var(--bg);border:1px solid var(--line-2);border-radius:10px;padding:8px 10px;font-size:12px;line-height:1.5;white-space:nowrap;z-index:2;color:var(--muted)}
+.chart-tip b{color:var(--text);font-weight:600;font-size:13px}
+.chart-tip[hidden],.chart-empty[hidden]{display:none}
+.chart-empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:13px;text-align:center;padding:16px;pointer-events:none}
+.chart-legend{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-top:12px;font-size:12px;color:var(--muted)}
+.chart-legend span:before{content:"";display:inline-block;vertical-align:middle;margin-right:7px}
+.lg-line:before{width:14px;height:2px;border-radius:2px;background:var(--blue)}
+.lg-band:before{width:12px;height:12px;border-radius:3px;background:rgba(127,182,154,.25)}
+.lg-dash:before{width:14px;border-top:1.5px dashed #7a8294}
+.btn-link{width:auto;margin-left:auto;padding:4px 8px;border:0;background:transparent;color:var(--muted);font-size:12px;text-decoration:underline;text-underline-offset:3px}
+.btn-link:hover:not(:disabled){background:transparent;border:0;color:var(--text)}
+@media (max-width:560px){.chart-stats b{font-size:15px}.chart-wrap{height:200px}}
+
+.page{max-width:1560px;margin:0 auto}
+.main-layout{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 340px;max-width:none;margin:0;gap:20px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px;min-width:0}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+.panel-title{font-size:16px;font-weight:600;letter-spacing:-.01em;margin:0}
+.panel-sub{font-size:12px;color:var(--muted);margin:2px 0 0}
+.panel-head button{width:auto;flex:none;padding:8px 14px;font-size:13px}
+.panel-ard .data-grid{margin-bottom:0}
+.panel-ard .data-grid .chart-card{padding:18px}
+.pan-tilt-panel{margin:14px 0 0}
+.pan-tilt-panel h2{text-align:left;margin-bottom:14px}
+.cam-controls{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;justify-content:center}
+.pt-controls{grid-template-columns:repeat(3,56px)}
+.pt-controls button{height:44px}
+.pt-btn.pressed{background:rgba(127,182,154,.18);border-color:var(--accent);transform:scale(.96)}
+.pos-wrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+.pos-pad{position:relative;width:100%;max-width:170px;aspect-ratio:7/5;background:var(--surface);border:1px solid var(--line-2);border-radius:12px}
+.pos-pad:before,.pos-pad:after{content:"";position:absolute;background:var(--line)}
+.pos-pad:before{left:50%;top:0;bottom:0;width:1px}
+.pos-pad:after{top:50%;left:0;right:0;height:1px}
+.pos-pad i{position:absolute;left:50%;top:50%;width:12px;height:12px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%);z-index:1;transition:left .25s,top .25s;box-shadow:0 0 0 4px rgba(127,182,154,.18)}
+.pos-label{font-size:11px;color:var(--muted);margin:0;letter-spacing:.04em}
+.kbd-hint{font-size:12px;color:var(--muted);text-align:center;margin:12px 0 0;display:flex;flex-wrap:wrap;gap:4px 5px;justify-content:center;align-items:center}
+kbd{display:inline-block;min-width:24px;padding:2px 6px;border:1px solid var(--line-2);border-bottom-width:2px;border-radius:6px;background:var(--surface);font:500 11px/1.5 var(--font);color:var(--text);text-align:center}
+.panel-qr{padding:22px 20px;text-align:center}
+.panel-qr .panel-head{justify-content:center;text-align:center}
+.qr-stage{margin:18px auto 14px}
+#qrcode{display:flex;justify-content:center;align-items:center;min-width:0;min-height:0;padding:14px;border-radius:22px;background:#0a0c10;border:1px solid var(--line-2);box-shadow:inset 0 0 0 5px rgba(127,182,154,.05);color:var(--muted);font-size:13px}
+#qrcode.qr-light{background:#f3f4f6;border-color:#d4d7de;box-shadow:none}
+#qrcode canvas{width:100%!important;height:auto!important;max-width:248px;border-radius:12px}
+.qr-mode{margin:2px auto 0;display:block}
+.qr-copy-info{margin:4px 0}
+@media (max-width:1240px){.main-layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.panel-qr{grid-column:1/-1;max-width:460px;width:100%;justify-self:center}}
+@media (max-width:820px){.main-layout{grid-template-columns:1fr}.cam-controls{grid-template-columns:1fr;justify-items:center}}
+@media (max-width:560px){.panel{padding:18px}.panel-head{flex-wrap:wrap}}
+
+.cap-bar{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.cap-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 12px;font-size:13px}
+.cap-btn svg{flex:none}
+.cap-btn .rec-dot{width:9px;height:9px;border-radius:50%;background:var(--red);flex:none}
+.cap-btn.on{background:rgba(220,127,118,.14);border-color:rgba(220,127,118,.5);color:var(--red)}
+.cap-btn.on .rec-dot{animation:recpulse 1.2s ease-in-out infinite}
+@keyframes recpulse{50%{opacity:.25}}
+.rec-badge{position:absolute;top:10px;left:10px;z-index:3;display:flex;align-items:center;gap:8px;padding:5px 11px;border-radius:999px;background:rgba(10,12,16,.72);color:#f1f3f6;font-size:12px;font-variant-numeric:tabular-nums;pointer-events:none}
+.rec-badge:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--red)}
+.rec-badge[hidden],.shots[hidden]{display:none}
+.cap-note{font-size:12px;color:var(--muted);margin:10px 0 0;min-height:0;overflow-wrap:anywhere}
+.cap-note:empty{display:none}
+.shots{display:flex;gap:10px;overflow-x:auto;padding:12px 0 2px;scrollbar-width:thin}
+.shot{position:relative;flex:none;width:104px;padding:0;border-radius:10px;overflow:hidden;border:1px solid var(--line-2);background:var(--surface);text-align:left}
+.shot img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.shot-kind{position:absolute;top:6px;left:6px;background:rgba(10,12,16,.75);color:#f1f3f6;font-size:9px;font-weight:600;letter-spacing:.06em;padding:2px 6px;border-radius:6px}
+.shot-meta{display:block;padding:6px 8px;font:500 10px/1.3 var(--font);color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.qr-stage{position:relative;display:block;width:fit-content;padding:12px;margin:18px auto 14px}
+.qr-stage:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.8;background:
+linear-gradient(var(--accent),var(--accent)) top left/22px 2px no-repeat,linear-gradient(var(--accent),var(--accent)) top left/2px 22px no-repeat,
+linear-gradient(var(--accent),var(--accent)) top right/22px 2px no-repeat,linear-gradient(var(--accent),var(--accent)) top right/2px 22px no-repeat,
+linear-gradient(var(--accent),var(--accent)) bottom left/22px 2px no-repeat,linear-gradient(var(--accent),var(--accent)) bottom left/2px 22px no-repeat,
+linear-gradient(var(--accent),var(--accent)) bottom right/22px 2px no-repeat,linear-gradient(var(--accent),var(--accent)) bottom right/2px 22px no-repeat}
+#qrcode{padding:12px;border-radius:18px}
+#qrcode canvas{max-width:264px;border-radius:10px}
+
+.shot{cursor:pointer}
+.shot.is-video:after{content:"";position:absolute;left:calc(50% - 15px);top:calc(104px * .375 - 15px);width:30px;height:30px;border-radius:50%;background:rgba(10,12,16,.72) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 6l9 6-9 6z' fill='%23f1f3f6'/%3E%3C/svg%3E") center/18px no-repeat;pointer-events:none}
+.viewer{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;gap:12px;padding:16px;background:rgba(8,9,12,.9)}
+.viewer.open{display:flex}
+.viewer button{width:auto}
+.viewer-box{flex:0 1 auto;width:fit-content;min-width:min(320px,100%);max-width:calc(100% - 112px);display:flex;flex-direction:column;gap:12px}
+.viewer-media{display:flex;justify-content:center}
+.viewer-media img,.viewer-media video{display:block;max-width:100%;max-height:calc(100vh - 140px);max-height:calc(100dvh - 140px);border-radius:14px;background:#000}
+.viewer-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.viewer-info{display:flex;align-items:center;gap:10px;min-width:0;font-size:13px}
+.viewer-kind{padding:2px 8px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line-2);font-size:10px;font-weight:600;letter-spacing:.06em}
+.viewer-code{color:var(--muted);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.viewer-actions{display:flex;gap:8px}
+.viewer-save{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.viewer-save:hover:not(:disabled){background:#92c4aa;border-color:#92c4aa}
+.viewer-nav{flex:none;width:44px!important;height:44px;padding:0;border-radius:50%;font-size:24px;line-height:1}
+.viewer-nav[hidden]{display:none}
+@media (max-width:640px){.viewer-box{max-width:calc(100% - 80px)}.viewer{padding:12px 8px;gap:4px}.viewer-nav{width:36px!important;height:36px;font-size:20px}}
+
+/* PIR hareket algilama ve bildirim alanlari */
+.motion-config{margin:12px 0;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 15px}
+.motion-config .auto-control-box{border:0;background:transparent;padding:0}
+.motion-help{font-size:12px;color:var(--muted);line-height:1.5;margin:9px 0 0}
+.motion-interval-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 0;font-size:13px;color:var(--text)}
+.motion-interval-row select{min-width:112px;padding:8px 10px;background:var(--surface);color:var(--text);border:1px solid var(--line-2);border-radius:9px;font:inherit}
+.motion-saved{margin-top:5px;font-size:11px;color:var(--muted)}
+.motion-alert{font-size:12px;margin:10px 0 0;padding:11px 12px;border-radius:10px;border:1px solid rgba(217,181,100,.5);background:rgba(217,181,100,.08);color:var(--yellow)}
+.motion-alert[hidden]{display:none}
+.mail-chip{display:inline-flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--line-2);border-radius:999px;padding:4px 6px 4px 10px;font-size:12px}
+.mail-chip button{width:auto;min-height:0;padding:0 6px;border:0;background:transparent;font-size:15px;line-height:1;color:var(--muted);cursor:pointer}
+</style>
+</head>
+<body>
+    <div class="page">
+        <header class="brand"><span class="brand-mark" aria-hidden="true"></span><div><h1>Akıllı Tarla</h1><p>Elegan Studios · Sulama ve kamera paneli</p></div></header>
+        <div class="main-layout">
+
+            <section class="panel panel-ard" aria-label="Arduino sulama istasyonu">
+                <div class="panel-head">
+                    <div><h2 class="panel-title">Arduino</h2><p class="panel-sub">Sulama istasyonu · canlı veriler</p></div>
+                    <button id="btnConnectArduino" type="button">Arduino'ya Bağlan</button>
+                </div>
+                <div class="data-grid">
+                    <div class="data-card"><h3>Sıcaklık</h3><p class="value" id="tempValue">-- °C</p></div>
+                    <div class="data-card"><h3>Hava Durumu</h3><p class="value" id="rainValue">--</p></div>
+                    <div class="data-card full-width">
+                        <h3>Toprak Nemi</h3>
+                        <p class="value" id="moistValue">-- %</p>
+                        <div class="progress-bg"><div class="progress-fill" id="moistBar"></div></div>
+                    </div>
+                    <div class="data-card full-width"><h3>Sistem Durumu</h3><p class="value" id="pumpValue">Bağlantı Bekleniyor...</p></div>
+                    <div class="data-card full-width chart-card">
+                    <div class="chart-head">
+                        <div><h3>Nem geçmişi</h3><p class="chart-sub" id="mhSub">Veri bekleniyor</p></div>
+                        <div class="seg" role="group" aria-label="Zaman aralığı">
+                            <button type="button" data-r="300">5 dk</button><button type="button" data-r="1800" class="on">30 dk</button><button type="button" data-r="3600">1 sa</button>
+                        </div>
+                    </div>
+                    <div class="chart-stats">
+                        <div><span>Şu an</span><b id="mhNow">--</b></div>
+                        <div><span>Ortalama</span><b id="mhAvg">--</b></div>
+                        <div><span>En düşük</span><b id="mhMin">--</b></div>
+                        <div><span>En yüksek</span><b id="mhMax">--</b></div>
+                    </div>
+                    <div class="chart-wrap" id="mhWrap">
+                        <canvas id="mhCanvas" role="img" aria-label="Toprak nemi geçmiş grafiği"></canvas>
+                        <div class="chart-tip" id="mhTip" hidden></div>
+                        <div class="chart-empty" id="mhEmpty">Arduino bağlanınca nem grafiği burada oluşacak.</div>
+                    </div>
+                    <div class="chart-legend">
+                        <span class="lg-line">Toprak nemi</span><span class="lg-band">Pompa açık</span><span class="lg-dash">Otomatik eşikler (30 / 60)</span>
+                        <button type="button" class="btn-link" id="mhClear">Geçmişi temizle</button>
+                    </div>
+                </div>
+                </div>
+                <h2 class="section-title">Sulama kontrolü</h2>
+                <div class="controls">
+                    <div class="auto-control-box">
+                        <span class="auto-text">Otomatik Sulama</span>
+                        <label class="switch"><input type="checkbox" id="autoSwitch" disabled><span class="slider"></span></label>
+                    </div>
+                    <button id="btnAction" class="btn-blue" type="button" disabled>Sulamayı Aç</button>
+                </div>
+            </section>
+
+            <section class="panel panel-cam" aria-label="Kamera">
+                <div class="panel-head">
+                    <div><h2 class="panel-title">Kamera</h2><p class="panel-sub">Deneyap Kart 1A · OV2640</p></div>
+                    <button id="btnConnectCamera" type="button">Kameraya Bağlan</button>
+                </div>
+                <div class="camera-box">
+                    <span class="camera-placeholder" id="camStatus">Kamera Bağlantısı Bekleniyor...</span>
+                    <img id="cameraStream" alt="Kamera Görüntüsü">
+                </div>
+                <div class="cap-bar">
+                    <button type="button" id="btnPhoto" class="cap-btn" disabled><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Fotoğraf çek</button>
+                    <button type="button" id="btnRec" class="cap-btn" disabled><span class="rec-dot" aria-hidden="true"></span><span id="btnRecText">Kayıt başlat</span></button>
+                </div>
+                <p class="cap-note" id="capNote" aria-live="polite"></p>
+                <div class="shots" id="shots" hidden aria-label="Son çekimler"></div>
+                <div class="motion-config">
+                    <div class="auto-control-box">
+                        <span class="auto-text">Hareket Bildirimi</span>
+                        <label class="switch"><input type="checkbox" id="motionSwitch" aria-label="Hareket bildirimlerini aç veya kapat"><span class="slider"></span></label>
+                    </div>
+                    <label class="motion-interval-row" for="motionInterval"><span>Fotoğraflar arası en az</span>
+                        <select id="motionInterval" aria-label="Hareket fotoğrafı çekim aralığı">
+                            <option value="3">3 saniye</option><option value="5" selected>5 saniye</option>
+                            <option value="10">10 saniye</option><option value="15">15 saniye</option>
+                            <option value="30">30 saniye</option>
+                        </select>
+                    </label>
+                    <p class="motion-saved">Bu cihazın seçimi otomatik kaydedilir. Sensör HIGH kaldığında tekrar çekim yapılabilir.</p>
+                    <p class="motion-help" id="motionStatus">Kapalı · Servo durduğunda hareket algılanır ve fotoğraf çekilir.</p>
+                    <p class="motion-alert" id="motionAlert" role="status" aria-live="polite" hidden></p>
+                    <div class="auto-control-box" style="margin-top:12px">
+                        <span class="auto-text">Fotoğrafı e-postayla gönder</span>
+                        <label class="switch"><input type="checkbox" id="mailSwitch" aria-label="Hareket fotoğrafını e-postayla gönder"><span class="slider"></span></label>
+                    </div>
+                    <div class="mail-rcpt-row" style="display:flex;gap:8px;margin-top:10px">
+                        <input type="email" id="mailTo" placeholder="alici@ornek.com" autocomplete="off" inputmode="email" aria-label="Alıcı e-posta adresi" style="flex:1;min-width:0;padding:8px 10px;background:var(--surface);color:var(--text);border:1px solid var(--line-2);border-radius:9px;font:inherit">
+                        <button type="button" class="btn-outline" id="mailAdd" style="width:auto;padding:8px 14px">Ekle</button>
+                    </div>
+                    <div id="mailList" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"></div>
+                    <p class="motion-help">En fazla 5 alıcı eklenebilir; fotoğraf hepsine aynı anda gider. Liste bu tarayıcıda kaydedilir. Bilgisayarda <b>mail_server.py</b> çalışıyor olmalı.</p>
+                    <button type="button" class="btn-outline" id="mailTest" style="margin-top:8px">Mail sunucusunu test et</button>
+                </div>
+                <section class="pan-tilt-panel" aria-label="Kamera yön kontrolü">
+                    <h2>Yön kontrolü</h2>
+                    <div class="cam-controls">
+                        <div class="pt-controls">
+                            <span></span><button type="button" class="pt-btn" data-dx="0" data-dy="-10" aria-label="Kamerayı yukarı çevir">↑</button><span></span>
+                            <button type="button" class="pt-btn" data-dx="-10" data-dy="0" aria-label="Kamerayı sola çevir">←</button>
+                            <button type="button" id="ptHome" class="pt-home" aria-label="Kamerayı ortaya getir">Ortala</button>
+                            <button type="button" class="pt-btn" data-dx="10" data-dy="0" aria-label="Kamerayı sağa çevir">→</button>
+                            <span></span><button type="button" class="pt-btn" data-dx="0" data-dy="10" aria-label="Kamerayı aşağı çevir">↓</button><span></span>
+                        </div>
+                        <div class="pos-wrap"><div class="pos-pad" id="posPad" aria-hidden="true"><i id="posDot"></i></div><p class="pos-label">Kamera yönü</p></div>
+                    </div>
+                    <p class="pt-help" id="pcServoStatus" aria-live="polite">Deneyap kamera bağlanınca yön butonları açılır.</p>
+                    <p class="kbd-hint"><kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd> yönlendir · <kbd>Shift</kbd> ince ayar · <kbd>Home</kbd> ortala · <kbd>P</kbd> fotoğraf · <kbd>R</kbd> kayıt</p>
+                </section>
+            </section>
+
+            <section class="panel panel-qr qr-card" aria-label="Telefon bağlantısı">
+                <div class="panel-head"><div><h2 class="panel-title">Telefonunu Tarlaya Bağla</h2><p class="panel-sub">Bir kez eşleştir, sonra direkt bağlan</p></div></div>
+                <div class="qr-status" id="qrOnlineStatus" role="status">Bağlantı hazırlanıyor</div>
+                <label class="field-label" for="farmName">Tarla adı</label>
+                <input id="farmName" maxlength="48" placeholder="Örn. Bahçe Tarlası" autocomplete="off" value="Tarlam">
+                <div class="qr-stage"><div id="qrcode" aria-label="Mobil tarla bağlantısı QR kodu"></div></div>
+                <p class="qr-caption">Telefonunun kamerasıyla tara veya mobil uygulamada <strong>Yeni Tarla Ekle</strong> seç.</p>
+                <div class="qr-actions">
+                    <button id="btnCopyFarmLink" type="button">Bağlantıyı Kopyala</button>
+                    <button id="btnCopyFarmId" type="button">Tarla ID Kopyala</button>
+                </div>
+                <button type="button" class="btn-link qr-mode" id="btnQRMode">Okunmuyorsa açık zemin kullan</button>
+                <p class="qr-copy-info" id="qrCopyInfo" aria-live="polite"></p>
+                <hr class="qr-separator">
+                <p class="peer-id-text" id="peerIdDisplay">Kalıcı bağlantı kimliği hazırlanıyor...</p>
+                <p class="field-hint" id="peerStatus">Tarla kimliği bu bilgisayarın tarayıcısına kaydedilir.</p>
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        let arduinoPort = null, cameraPort = null;
+        let cameraWriter = null, cameraPending = false, cameraInitFailed = false;
+        let cameraFrameTimer = null, cameraResponseTimer = null, cameraDecodeTimer = null, latestCameraBase64 = "";
+        let cameraLastGoodAt = 0, cameraTimeouts = 0, cameraLastMobileAt = 0;
+        const CAMERA_RESPONSE_TIMEOUT_MS = 6500;
+        const CAMERA_FRAME_DELAY_MS = 750; // USB seri akisinda en fazla ~1 kare/saniye
+        const MOBILE_FRAME_INTERVAL_MS = 1600; // Mobil PeerJS kuyrugunu doldurma
+        let arduinoWriter = null;
+        let currentPumpState = '0';
+        let lastServoPosition = null;
+        let motionSequenceBusy = false; // hareket foto dizisi sürerken yeni hareketleri yok say
+        let peer = null, connectedPeers = [];
+        const motionSwitch = document.getElementById('motionSwitch');
+        const motionInterval = document.getElementById('motionInterval');
+        const motionStatus = document.getElementById('motionStatus');
+        const motionAlert = document.getElementById('motionAlert');
+        const mailSwitch = document.getElementById('mailSwitch');
+        const mailTo = document.getElementById('mailTo');
+        const mailAdd = document.getElementById('mailAdd');
+        const mailList = document.getElementById('mailList');
+        let pirSensorReady = false, firmwareMotionArmed = null, firmwareMotionInterval = null;
+        let motionCapturePending = null, lastMotionEventAt = 0;
+        const MOTION_PC_KEY = 'akilliTarla.motionEnabled.pc.v1';
+        const MOTION_INTERVAL_PC_KEY = 'akilliTarla.motionInterval.pc.v1';
+        const validMotionInterval = n => [3, 5, 10, 15, 30].includes(Number(n)) ? Number(n) : 5;
+        const pcServoStatus = document.getElementById('pcServoStatus');
+        const ptButtons = [...document.querySelectorAll('.pt-btn'), document.getElementById('ptHome')];
+        ptButtons.forEach(b => { b.disabled = true; });
+        function setServoStatus(text) { pcServoStatus.textContent = text; }
+        async function moveCamera(dx, dy) {
+            if (!cameraWriter) { setServoStatus('Once Deneyap kamera portuna baglan.'); return false; }
+            if (!Number.isInteger(dx) || !Number.isInteger(dy) || Math.abs(dx) > 45 || Math.abs(dy) > 45) return false;
+            try {
+                await sendToCamera('G,' + dx + ',' + dy);
+                return true;
+            } catch (err) {
+                setServoStatus('Servo komutu gonderilemedi: ' + err.message);
+                return false;
+            }
+        }
+        // ---- Hareket fotoğraf dizisi için servo yardımcıları ----
+        const SEQ_PAN = 100, SEQ_TILT = 50;      // 2. fotoğrafın açısı: Sag-sol 100° / Yukari-asagi 50°
+        const SEQ_SETTLE_MS = 2800;               // servo durup görüntü oturana kadar bekleme
+        const seqSleep = ms => new Promise(r => setTimeout(r, ms));
+        async function goToServo(pan, tilt) {
+            // Yazılım sadece göreli G,dx,dy komutunu biliyor (adım başına en fazla ±45); hedefe adım adım gidilir.
+            if (!lastServoPosition) { try { await sendToCamera('S'); } catch (e) { return false; } await seqSleep(500); }
+            for (let i = 0; i < 6; i++) {
+                const cur = lastServoPosition || {pan: 90, tilt: 90};
+                const dx = Math.max(-45, Math.min(45, pan - cur.pan));
+                const dy = Math.max(-45, Math.min(45, cur.tilt - tilt)); // kart: tilt = tilt - dy
+                if (dx === 0 && dy === 0) return true;
+                const before = lastServoPosition;
+                if (!(await moveCamera(dx, dy))) return false;
+                for (let w = 0; w < 10 && lastServoPosition === before; w++) await seqSleep(100);
+            }
+            return !!lastServoPosition && lastServoPosition.pan === pan && lastServoPosition.tilt === tilt;
+        }
+        function nextCameraFrame(timeout = 9000) {
+            return new Promise(resolve => {
+                let done = false;
+                const end = ok => { if (done) return; done = true; clearTimeout(timer); cameraStream.removeEventListener('load', onLoad); resolve(ok); };
+                const onLoad = () => end(true);
+                const timer = setTimeout(() => end(false), timeout);
+                cameraStream.addEventListener('load', onLoad);
+                if (!cameraPending) { clearTimeout(cameraFrameTimer); requestCameraFrame(); }
+            });
+        }
+        document.querySelectorAll('.pt-btn').forEach(button => {
+            button.addEventListener('click', () => moveCamera(Number(button.dataset.dx), Number(button.dataset.dy)));
+        });
+        document.getElementById('ptHome').addEventListener('click', async () => {
+            if (!cameraWriter) return;
+            try { await sendToCamera('C'); } catch(err) { setServoStatus(err.message); }
+        });
+
+        const btnConnectArduino = document.getElementById('btnConnectArduino');
+        const btnConnectCamera = document.getElementById('btnConnectCamera');
+        const cameraStream = document.getElementById('cameraStream');
+        const camStatus = document.getElementById('camStatus');
+        
+        const tempValue = document.getElementById('tempValue');
+        const moistValue = document.getElementById('moistValue');
+        const moistBar = document.getElementById('moistBar');
+        const rainValue = document.getElementById('rainValue');
+        const pumpValue = document.getElementById('pumpValue');
+        
+        const autoSwitch = document.getElementById('autoSwitch');
+        const btnAction = document.getElementById('btnAction');
+        const peerIdDisplay = document.getElementById('peerIdDisplay');
+
+        // KALICI TARLA KİMLİĞİ: Sayfa yeniden açıldığında aynı PeerJS ID kullanılır.
+        // localStorage bu tarayıcıda / bu Netlify alan adında tutulur.
+        const FARM_PEER_KEY = 'akilliTarla.farmPeerId.v1';
+        const FARM_NAME_KEY = 'akilliTarla.farmName.v1';
+        const farmNameInput = document.getElementById('farmName');
+        const peerStatus = document.getElementById('peerStatus');
+        motionSwitch.checked = readSetting(MOTION_PC_KEY, '0') === '1';
+        motionInterval.value = String(validMotionInterval(readSetting(MOTION_INTERVAL_PC_KEY, '5')));
+        const MAIL_ON_KEY = 'akilliTarla.mailEnabled.v1';
+        mailSwitch.checked = readSetting(MAIL_ON_KEY, '0') === '1';
+        const MAIL_LIST_KEY = 'akilliTarla.mailList.v1', MAIL_MAX = 5;
+        const MAIL_RE = /^[^@\s,;<>]+@[^@\s,;<>]+\.[^@\s,;<>]+$/;
+        let mailRecipients = [];
+        try {
+            const v = JSON.parse(readSetting(MAIL_LIST_KEY, '[]'));
+            if (Array.isArray(v)) mailRecipients = v.filter(a => typeof a === 'string' && MAIL_RE.test(a)).slice(0, MAIL_MAX);
+        } catch (e) {}
+        if (!mailRecipients.length) { // eski tek adresli kaydı taşı
+            const old = readSetting('akilliTarla.mailTo.v1', '');
+            if (old) mailRecipients = old.split(/[,;\s]+/).filter(a => MAIL_RE.test(a)).slice(0, MAIL_MAX);
+        }
+        let fixedFarmPeerId = '';
+        let peerReconnectTimer = null;
+
+        function readSetting(key, fallback) {
+            try { return localStorage.getItem(key) || fallback; }
+            catch (e) { peerStatus.textContent = 'Tarayıcı depolaması kullanılamıyor. Kalıcı bağlantı garantisi yok.'; return fallback; }
+        }
+        function writeSetting(key, value) {
+            try { localStorage.setItem(key, value); return true; }
+            catch (e) { peerStatus.textContent = 'Tarayıcı kayıtlarına erişilemiyor. Gizli sekme kullanmayın.'; return false; }
+        }
+        function generatePeerId() {
+            const bytes = new Uint8Array(16);
+            crypto.getRandomValues(bytes);
+            return 'tarla-' + Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+        }
+        function normalizeFarmName(name) { return String(name || '').trim().slice(0, 48) || 'Tarlam'; }
+        farmNameInput.value = readSetting(FARM_NAME_KEY, 'Tarlam');
+        fixedFarmPeerId = readSetting(FARM_PEER_KEY, '');
+        if (!/^tarla-[0-9a-f]{32}$/.test(fixedFarmPeerId)) {
+            fixedFarmPeerId = generatePeerId();
+            writeSetting(FARM_PEER_KEY, fixedFarmPeerId);
+        }
+        function makeFarmLink(id) {
+            const url = new URL('tarla.m.html', document.baseURI);
+            url.searchParams.set('peer', id);
+            url.searchParams.set('name', normalizeFarmName(farmNameInput.value));
+            return url.toString();
+        }
+        function setQRConnectionState(message, online) {
+            const element = document.getElementById('qrOnlineStatus');
+            element.textContent = message;
+            element.classList.toggle('online', Boolean(online));
+        }
+        let qrLibraryLoading = null;
+        async function ensureQRCodeLibrary() {
+            if (typeof QRCode !== 'undefined') return true;
+            if (!qrLibraryLoading) {
+                qrLibraryLoading = (async () => {
+                    for (const src of [
+                        'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js',
+                        'https://unpkg.com/qrcodejs@1.0.0/qrcode.min.js'
+                    ]) {
+                        try {
+                            await new Promise((resolve, reject) => {
+                                const script = document.createElement('script');
+                                script.src = src;
+                                const timer = setTimeout(() => { script.remove(); reject(new Error('QR library timeout')); }, 4500);
+                                script.onload = () => { clearTimeout(timer); resolve(); };
+                                script.onerror = () => { clearTimeout(timer); script.remove(); reject(new Error('QR library unavailable')); };
+                                document.head.appendChild(script);
+                            });
+                            if (typeof QRCode !== 'undefined') return true;
+                        } catch(error) { console.warn('[QR]', error.message); }
+                    }
+                    return false;
+                })().finally(() => { qrLibraryLoading = null; });
+            }
+            return qrLibraryLoading;
+        }
+        let qrLight = false, lastQRId = '';
+        function qrCR(c, x, y, w, h, r) {
+            c.moveTo(x + r[0], y); c.lineTo(x + w - r[1], y); c.arcTo(x + w, y, x + w, y + r[1], r[1]);
+            c.lineTo(x + w, y + h - r[2]); c.arcTo(x + w, y + h, x + w - r[2], y + h, r[2]);
+            c.lineTo(x + r[3], y + h); c.arcTo(x, y + h, x, y + h - r[3], r[3]);
+            c.lineTo(x, y + r[0]); c.arcTo(x, y, x + r[0], y, r[0]); c.closePath();
+        }
+        function drawStyledQR(container, text) {
+            const tmp = document.createElement('div');
+            const m = new QRCode(tmp, {text, width: 64, height: 64, correctLevel: QRCode.CorrectLevel.M})._oQRCode;
+            const n = m.getModuleCount(), quiet = qrLight ? 4 : 3, size = 264, dpr = window.devicePixelRatio || 1;
+            const cell = size / (n + quiet * 2), o = quiet * cell;
+            const cv = document.createElement('canvas');
+            cv.width = cv.height = Math.round(size * dpr);
+            cv.setAttribute('role', 'img'); cv.setAttribute('aria-label', 'Mobil tarla bağlantısı QR kodu');
+            const c = cv.getContext('2d'); c.scale(dpr, dpr);
+            const bg = qrLight ? '#f3f4f6' : '#0a0c10', fg = qrLight ? '#0e1013' : '#e8eaee', acc = qrLight ? '#0e1013' : '#7fb69a';
+            c.fillStyle = bg; c.fillRect(0, 0, size, size);
+            let L = Math.round(n * .2); if (L % 2 === 0) L++; L = Math.max(7, Math.min(11, L));
+            const s0 = Math.floor((n - L) / 2);
+            const inEye = (r, k) => (r < 7 && k < 7) || (r < 7 && k >= n - 7) || (r >= n - 7 && k < 7);
+            const inLogo = (r, k) => r >= s0 && r < s0 + L && k >= s0 && k < s0 + L;
+            const on = (r, k) => r >= 0 && k >= 0 && r < n && k < n && !inEye(r, k) && !inLogo(r, k) && m.isDark(r, k);
+            c.fillStyle = fg; c.beginPath();
+            const rad = cell * .5;
+            for (let r = 0; r < n; r++) for (let k = 0; k < n; k++) {
+                if (!on(r, k)) continue;
+                const U = on(r - 1, k), D = on(r + 1, k), Lf = on(r, k - 1), R = on(r, k + 1);
+                qrCR(c, o + k * cell, o + r * cell, cell + .4, cell + .4, [!U && !Lf ? rad : 0, !U && !R ? rad : 0, !D && !R ? rad : 0, !D && !Lf ? rad : 0]);
+            }
+            c.fill();
+            c.fillStyle = acc;
+            [[0, 0], [0, n - 7], [n - 7, 0]].forEach(([r, k]) => {
+                const x = o + k * cell, y = o + r * cell, q = (v) => [v, v, v, v];
+                c.beginPath(); qrCR(c, x, y, 7 * cell, 7 * cell, q(2.4 * cell)); qrCR(c, x + cell, y + cell, 5 * cell, 5 * cell, q(1.5 * cell)); c.fill('evenodd');
+                c.beginPath(); qrCR(c, x + 2 * cell, y + 2 * cell, 3 * cell, 3 * cell, q(1.1 * cell)); c.fill();
+            });
+            const lx = o + s0 * cell, ly = o + s0 * cell, ls = L * cell, ms = ls * .62, mo = (ls - ms) / 2;
+            c.fillStyle = bg; c.beginPath(); qrCR(c, lx, ly, ls, ls, [cell * 2.2, cell * 2.2, cell * 2.2, cell * 2.2]); c.fill();
+            c.fillStyle = acc; c.beginPath(); qrCR(c, lx + mo, ly + mo, ms, ms, [ms * .12, ms * .5, ms * .12, ms * .5]); c.fill();
+            container.classList.toggle('qr-light', qrLight);
+            container.replaceChildren(cv);
+        }
+        let qrRenderVersion = 0;
+        async function renderFarmQR(id) {
+            const renderVersion = ++qrRenderVersion;
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.textContent = 'QR hazırlanıyor...';
+            if (typeof QRCode === 'undefined') await ensureQRCodeLibrary();
+            if (renderVersion !== qrRenderVersion) return;
+            qrContainer.replaceChildren();
+            if (typeof QRCode !== 'undefined') {
+                try {
+                    lastQRId = id;
+                    drawStyledQR(qrContainer, makeFarmLink(id));
+                } catch (error) {
+                    qrContainer.textContent = 'QR oluşturulamadı. Bağlantıyı Kopyala düğmesini kullan.';
+                }
+            } else {
+                qrContainer.textContent = 'QR yüklenemedi. Bağlantıyı Kopyala düğmesini kullan.';
+            }
+        }
+        async function copyQRValue(text, what) {
+            const result = document.getElementById('qrCopyInfo');
+            try {
+                if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error('Panoya erişilemiyor');
+                await navigator.clipboard.writeText(text);
+                result.textContent = what + ' kopyalandı.';
+            } catch (error) {
+                result.textContent = 'Otomatik kopyalama engellendi. Aşağıdaki tarla ID’sini elle kopyalayabilirsin.';
+                const idText = document.getElementById('peerIdDisplay');
+                idText.title = 'Kopyalamak için bu metni seç';
+            }
+        }
+        document.getElementById('btnCopyFarmLink').addEventListener('click', () => copyQRValue(makeFarmLink(fixedFarmPeerId), 'Mobil bağlantı linki'));
+        document.getElementById('btnCopyFarmId').addEventListener('click', () => copyQRValue(fixedFarmPeerId, 'Tarla kimliği'));
+        farmNameInput.addEventListener('change', () => {
+            farmNameInput.value = normalizeFarmName(farmNameInput.value);
+            writeSetting(FARM_NAME_KEY, farmNameInput.value);
+            if (peer && peer.open) renderFarmQR(fixedFarmPeerId);
+        });
+        function initPeer() {
+            clearTimeout(peerReconnectTimer);
+            if (peer && !peer.destroyed) peer.destroy();
+            peerStatus.textContent = 'Kalıcı tarla bağlantısı kuruluyor...';
+            // Rastgele new Peer() kullanmak her açılışta ID'yi değiştirirdi.
+            peer = new Peer(fixedFarmPeerId);
+            peer.on('open', (id) => {
+                peerIdDisplay.textContent = 'Kalıcı ID: ' + id;
+                peerStatus.textContent = 'Telefon kayıtları bu PC yeniden açılsa da geçerlidir. Bağlanmak için PC sayfası açık olmalıdır.';
+                renderFarmQR(id);
+                setQRConnectionState('Tarla bağlantısı hazır', true);
+            });
+            peer.on('connection', (connection) => {
+                connectedPeers.push(connection);
+                connection.on('open', () => {
+                    connection._lastPongAt = Date.now();
+                    sendDataToMobile();
+                    if (latestCameraBase64) sendCameraToPeer(connection, latestCameraBase64, true);
+                    if (lastServoPosition) connection.send({type:'servo_pos', payload:lastServoPosition});
+                    connection.send({type:'motion_status', payload:{cameraConnected:!!cameraWriter, sensorReady:pirSensorReady, armed:motionWanted()}});
+                });
+                connection.on('data', (data) => {
+                    if (data && data.type === 'cmd' && ['0','1','2'].includes(String(data.payload))) {
+                        sendToArduino(String(data.payload));
+                    }
+                    if (data && data.type === 'pong') connection._lastPongAt = Date.now();
+                    if (data && data.type === 'motion_pref' && typeof data.enabled === 'boolean') {
+                        connection._motionEnabled = data.enabled;
+                        connection._motionInterval = validMotionInterval(data.interval);
+                        updateMotionArm();
+                    }
+                    if (data && data.type === 'servo') {
+                        if (!cameraWriter) {
+                            if (connection.open) connection.send({type:'servo_error', payload:"Deneyap kamera portu bağlı değil. PC üzerinden Deneyap kamera bağlantısını aç."});
+                        } else if (data.payload === 'center') {
+                            sendToCamera('C').catch(console.error);
+                        } else if (data.payload && typeof data.payload === 'object') {
+                            const {dx, dy} = data.payload;
+                            moveCamera(dx, dy);
+                        }
+                    }
+                });
+                const cleanup = () => {
+                    connectedPeers = connectedPeers.filter(p => p !== connection);
+                    updateMotionArm();
+                };
+                connection.on('close', cleanup);
+                connection.on('error', cleanup);
+            });
+            peer.on('disconnected', () => {
+                peerStatus.textContent = 'Bağlantı kesildi; tekrar deneniyor...';
+                setQRConnectionState('Yeniden bağlanıyor', false);
+                if (!peer.destroyed) {
+                    try { peer.reconnect(); } catch(e) { console.warn('Peer tekrar bağlanamadı', e); }
+                }
+            });
+            peer.on('error', (err) => {
+                console.error('[Tarla PeerJS]', err);
+                if (err.type === 'unavailable-id') {
+                    // Burada ID'yi ASLA değiştirme: telefondaki kayıtlar bozulur.
+                    peerStatus.textContent = 'Bu tarla kimliği başka sekmede/cihazda kullanımda. Diğer tarla sekmesini kapatıp tekrar açın.';
+                    setQRConnectionState('Tarla kimliği kullanımda', false);
+                    return;
+                }
+                peerStatus.textContent = 'Tarla çevrimiçi bağlantısı hatası: ' + (err.type || err.message);
+                setQRConnectionState('Bağlantı hatası', false);
+                if (peer.destroyed) {
+                    peerReconnectTimer = setTimeout(initPeer, 8000);
+                }
+            });
+            peer.on('close', () => {
+                peerStatus.textContent = 'Tarla bağlantısı kapandı. Yeniden bağlanılıyor...';
+                setQRConnectionState('Yeniden bağlanıyor', false);
+                peerReconnectTimer = setTimeout(initPeer, 7000);
+            });
+        }
+        initPeer();
+
+        function broadcast(msg) {
+            connectedPeers.forEach(conn => {
+                if (conn && conn.open) {
+                    try { conn.send(msg); } catch(e) { console.warn('Mobil veri gonderilemedi', e); }
+                }
+            });
+        }
+        function motionSubscriberCount() {
+            return connectedPeers.filter(c => c && c.open && c._motionEnabled === true).length;
+        }
+        function motionWanted() {
+            return motionSwitch.checked || motionSubscriberCount() > 0;
+        }
+        function effectiveMotionInterval() {
+            // En sik cekim isteyen aktif cihazin araligi kullanilir; pasif tercihler etkilemez.
+            const active = [];
+            if (motionSwitch.checked) active.push(validMotionInterval(motionInterval.value));
+            connectedPeers.forEach(c => {
+                if (c && c.open && c._motionEnabled) active.push(validMotionInterval(c._motionInterval));
+            });
+            return Math.min(...(active.length ? active : [validMotionInterval(motionInterval.value)]));
+        }
+        function describeMotion() {
+            if (!motionWanted()) return 'Kapalı · PC ve telefon bildirimleri kapalı.';
+            if (!cameraWriter) return 'Etkinleştirildi · Deneyap kamera portu bekleniyor.';
+            if (!pirSensorReady) return 'Etkinleştirildi · PIR sensörü hazırlanıyor (yaklaşık 45 sn).';
+            return (motionSwitch.checked ? 'PC bildirimleri açık' : 'PC bildirimi kapalı') +
+                ' · ' + motionSubscriberCount() + ' mobil abone · En az ' + effectiveMotionInterval() + ' sn aralıkla çekim.';
+        }
+        function updateMotionArm(force = false) {
+            const wanted = motionWanted(), interval = effectiveMotionInterval();
+            motionStatus.textContent = describeMotion();
+            if (cameraWriter && (force || firmwareMotionInterval !== interval)) {
+                firmwareMotionInterval = interval;
+                sendToCamera('T,' + interval).catch(err => {
+                    firmwareMotionInterval = null;
+                    motionStatus.textContent = 'Çekim aralığı ayarlanamadı: ' + err.message;
+                });
+            }
+            if (cameraWriter && (force || firmwareMotionArmed !== wanted)) {
+                firmwareMotionArmed = wanted;
+                sendToCamera(wanted ? 'M,1' : 'M,0').catch(err => {
+                    firmwareMotionArmed = null;
+                    motionStatus.textContent = 'Hareket sensörü komut hatası: ' + err.message;
+                });
+            }
+            broadcast({type:'motion_status', payload:{cameraConnected:!!cameraWriter, sensorReady:pirSensorReady,
+                armed:wanted, interval:wanted ? interval : null}});
+        }
+        // Hareket uyarısı: bildirim + ses + titreşim + sekme başlığı. Sunucu/servis çalışanı yok, düz HTML.
+        let alertAudio = null, flashTimer = null, permAsked = false;
+        const BASE_TITLE = document.title;
+        function askNotifyPermission() {
+            permAsked = true;
+            if ('Notification' in window && Notification.permission === 'default') {
+                try { Notification.requestPermission(); } catch (e) {}
+            }
+        }
+        // Ses ve izin için tarayıcı bir tıklama/dokunma ister; ilk dokunuşta hazırla.
+        ['pointerdown', 'keydown'].forEach(ev => window.addEventListener(ev, () => {
+            try {
+                if (!alertAudio) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) alertAudio = new AC(); }
+                if (alertAudio && alertAudio.state === 'suspended') alertAudio.resume();
+            } catch (e) {}
+            if (motionSwitch.checked && !permAsked) askNotifyPermission();
+        }, {passive: true}));
+        function beep() {
+            try {
+                if (!alertAudio || alertAudio.state !== 'running') return;
+                const t = alertAudio.currentTime;
+                [0, .25].forEach(d => {
+                    const o = alertAudio.createOscillator(), g = alertAudio.createGain();
+                    o.frequency.value = 880;
+                    g.gain.setValueAtTime(.0001, t + d);
+                    g.gain.exponentialRampToValueAtTime(.25, t + d + .02);
+                    g.gain.exponentialRampToValueAtTime(.0001, t + d + .2);
+                    o.connect(g); g.connect(alertAudio.destination);
+                    o.start(t + d); o.stop(t + d + .22);
+                });
+            } catch (e) {}
+        }
+        function notifyMotion(text) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                // renotify: aynı tag ile gelen sonraki bildirimler de uyarsın
+                try { new Notification('Akıllı Tarla · Hareket algılandı', {body: text, tag: 'tarla-motion', renotify: true}); } catch (e) {}
+            }
+            beep();
+            try { if (navigator.vibrate) navigator.vibrate([200, 100, 200]); } catch (e) {}
+            if (document.hidden) {
+                clearInterval(flashTimer);
+                let on = false;
+                flashTimer = setInterval(() => { document.title = (on = !on) ? '🔔 Hareket algılandı' : BASE_TITLE; }, 900);
+            }
+        }
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) { clearInterval(flashTimer); document.title = BASE_TITLE; }
+        });
+
+        function ensureBrowserNotificationPermission() { askNotifyPermission(); }
+        function displayMotionAlert(message, pcNotify) {
+            motionAlert.textContent = message;
+            motionAlert.hidden = false;
+            if (pcNotify) notifyMotion(message);
+        }
+        // ---- Hareket fotoğrafını yerel Python sunucusu (mail_server.py) ile Gmail'den gönder ----
+        const MAIL_SERVER_URL = 'http://localhost:5050/send';
+        async function sendMotionMail(blob, code) {
+            if (!mailSwitch.checked || !motionSwitch.checked) return;   // iki anahtar da açık olmalı
+            const to = mailRecipients.slice();
+            if (!to.length || !to.every(a => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(a))) {
+                motionAlert.textContent = 'E-posta gönderilemedi: alıcı listesi boş. Önce bir e-posta adresi ekle.';
+                motionAlert.hidden = false;
+                return;
+            }
+            try {
+                const r = await fetch(MAIL_SERVER_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'image/jpeg', 'X-Record-Code': code, 'X-To-Email': to.join(',')},
+                    body: blob
+                });
+                let j = {};
+                try { j = await r.json(); } catch (e) {}
+                if (!r.ok || !j.ok) throw new Error(j.error || ('HTTP ' + r.status));
+                motionAlert.textContent = 'E-posta gönderildi · ' + code;
+            } catch (e) {
+                motionAlert.textContent = 'E-posta gönderilemedi: ' + e.message + ' (mail_server.py çalışıyor mu?)';
+            }
+            motionAlert.hidden = false;
+        }
+        document.getElementById('mailTest').addEventListener('click', async () => {
+            // Tıklama ile yapılan istek: Chrome "yerel ağ erişimi" iznini ancak böyle sorar.
+            motionAlert.hidden = false; motionAlert.textContent = 'Mail sunucusu deneniyor…';
+            try {
+                const r = await fetch(MAIL_SERVER_URL.replace('/send', '/health'));
+                const j = await r.json();
+                motionAlert.textContent = j.ok ? 'Mail sunucusu çalışıyor' + (j.dry_run ? ' (DRY_RUN: gerçek mail gitmez)' : '') : 'Sunucu beklenmeyen cevap verdi.';
+            } catch (e) {
+                motionAlert.textContent = 'Mail sunucusuna ulaşılamadı: ' + e.message + ' · baslat.bat açık mı? Chrome izin sorarsa "İzin ver" de.';
+            }
+        });
+        function saveMailList() { writeSetting(MAIL_LIST_KEY, JSON.stringify(mailRecipients)); }
+        function renderMailList() {
+            mailList.textContent = '';
+            mailRecipients.forEach((addr, i) => {
+                const chip = document.createElement('span'); chip.className = 'mail-chip';
+                const t = document.createElement('span'); t.textContent = addr;
+                const x = document.createElement('button'); x.type = 'button'; x.textContent = '×';
+                x.setAttribute('aria-label', addr + ' adresini sil');
+                x.addEventListener('click', () => { mailRecipients.splice(i, 1); saveMailList(); renderMailList(); });
+                chip.append(t, x); mailList.appendChild(chip);
+            });
+            if (!mailRecipients.length) {
+                const e = document.createElement('span'); e.className = 'motion-help'; e.textContent = 'Henüz alıcı eklenmedi.';
+                mailList.appendChild(e);
+            }
+        }
+        function addMailRecipients() {
+            let msg = '';
+            for (const p of mailTo.value.split(/[,;\s]+/).filter(Boolean)) {   // virgüllü yapıştırmayı da kabul et
+                const a = p.toLowerCase();
+                if (!MAIL_RE.test(a)) { msg = 'Geçersiz adres: ' + p; continue; }
+                if (mailRecipients.includes(a)) continue;
+                if (mailRecipients.length >= MAIL_MAX) { msg = 'En fazla ' + MAIL_MAX + ' alıcı eklenebilir.'; break; }
+                mailRecipients.push(a);
+            }
+            saveMailList(); renderMailList();
+            if (!msg) mailTo.value = '';
+            else { motionAlert.textContent = msg; motionAlert.hidden = false; }
+        }
+        mailAdd.addEventListener('click', addMailRecipients);
+        mailTo.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addMailRecipients(); } });
+        renderMailList();
+        mailSwitch.addEventListener('change', () => {
+            writeSetting(MAIL_ON_KEY, mailSwitch.checked ? '1' : '0');
+            updateMotionArm();
+        });
+        motionSwitch.addEventListener('change', () => {
+            writeSetting(MOTION_PC_KEY, motionSwitch.checked ? '1' : '0');
+            if (motionSwitch.checked) ensureBrowserNotificationPermission();
+            updateMotionArm();
+        });
+        motionInterval.addEventListener('change', () => {
+            motionInterval.value = String(validMotionInterval(motionInterval.value));
+            writeSetting(MOTION_INTERVAL_PC_KEY, motionInterval.value);
+            updateMotionArm();
+        });
+        function onDeneyapMotionEvent() {
+            if (!motionWanted() || motionSequenceBusy) return;
+            const now = Date.now();
+            if (now - lastMotionEventAt < 2500) return;
+            lastMotionEventAt = now;
+            if (motionCapturePending && now - motionCapturePending.at < CAMERA_RESPONSE_TIMEOUT_MS * 2) return; // JPEG beklerken olayi ezme; eski olaylari kilitleme
+            motionCapturePending = {at:now};
+            if (motionSwitch.checked) displayMotionAlert('Hareket algılandı · Kamera fotoğrafı hazırlanıyor…', false);
+            // Akis zaten suruyorsa bir sonraki JPEG kare gelince fotograf cekilir.
+            if (!cameraPending) { clearTimeout(cameraFrameTimer); requestCameraFrame(); }
+        }
+        function publishMotionPhoto(canvas, code, at) {
+            const subs = connectedPeers.filter(c => c && c.open && c._motionEnabled);
+            if (!subs.length) return;
+            const small = document.createElement('canvas');
+            const ratio = Math.min(1, 720 / canvas.width);
+            small.width = Math.round(canvas.width * ratio); small.height = Math.round(canvas.height * ratio);
+            small.getContext('2d').drawImage(canvas, 0, 0, small.width, small.height);
+            let image = small.toDataURL('image/jpeg', .67).split(',')[1];
+            if (image.length > 90000) image = small.toDataURL('image/jpeg', .45).split(',')[1];
+            if (image.length > 100000) { console.warn('[PIR] Hareket JPEG PeerJS icin cok buyuk'); return; }
+            subs.forEach(c => {
+                const channel = c.dataChannel || c._dc;
+                if (channel && (channel.readyState !== 'open' || channel.bufferedAmount > 120000)) return;
+                try { c.send({type:'motion_photo', payload:{image, code, at}}); }
+                catch(e) { console.warn('[PIR] mobil fotograf iletilemedi', e); }
+            });
+        }
+
+        function sendCameraToPeer(conn, base64, force = false) {
+            if (!conn || !conn.open) return;
+            const now = Date.now();
+            if (!force && now - (conn._lastCameraSentAt || 0) < MOBILE_FRAME_INTERVAL_MS) return;
+            // PeerJS RTCDataChannel kuyruk birikimini engeller. Eski kareler atlanir.
+            const channel = conn.dataChannel || conn._dc;
+            if (channel && channel.readyState !== 'open') return;
+            if (channel && channel.bufferedAmount > 48000) return;
+            if (base64.length > 95000) return;
+            try {
+                conn.send({type: 'cam', payload: base64});
+                conn._lastCameraSentAt = now;
+            } catch (error) { console.warn('Kamera peer aktarimi hatasi', error); }
+        }
+        // Karsi taraf cevap vermiyorsa sessizce "bagli" gorunen oturumu temizle.
+        setInterval(() => {
+            const now = Date.now();
+            connectedPeers.slice().forEach(conn => {
+                if (!conn || !conn.open) return;
+                if (now - (conn._lastPongAt || now) > 80000) {
+                    try { conn.close(); } catch(e) {}
+                } else {
+                    try { conn.send({type:'ping'}); } catch(e) {}
+                }
+            });
+        }, 20000);
+
+        function sendDataToMobile() {
+            let line = `${tempValue.textContent.replace(' °C','')},${moistValue.textContent.replace(' %','')},${rainValue.textContent === 'Yağmurlu' ? '1' : '0'},${currentPumpState},${autoSwitch.checked ? '2' : '1'}`;
+            broadcast({ type: 'data', payload: line });
+        }
+
+        btnConnectArduino.addEventListener('click', async () => {
+            try {
+                arduinoPort = await navigator.serial.requestPort();
+                await arduinoPort.open({ baudRate: 9600 });
+                btnConnectArduino.textContent = "Arduino Bağlı";
+                btnConnectArduino.className = "btn-connected";
+                readArduinoLoop();
+            } catch (err) { console.error("Arduino bağlantı hatası:", err); }
+        });
+
+        async function readArduinoLoop() {
+            const textDecoder = new TextDecoderStream();
+            arduinoPort.readable.pipeTo(textDecoder.writable);
+            const reader = textDecoder.readable.getReader();
+            arduinoWriter = arduinoPort.writable.getWriter();
+
+            try {
+                let buffer = "";
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+                    buffer += value;
+                    let lines = buffer.split('\n');
+                    buffer = lines.pop();
+                    for (let line of lines) { parseArduinoData(line.trim()); }
+                }
+            } catch (err) { console.error("Arduino okuma hatası:", err); }
+            finally { reader.releaseLock(); }
+        }
+
+        function parseArduinoData(line) {
+            let data = line.split(',');
+            if (data.length === 5) {
+                currentPumpState = data[3];
+                tempValue.textContent = (data[0] !== 'nan') ? data[0] + ' °C' : '-- °C';
+                let moist = parseInt(data[1], 10);
+                moistValue.textContent = moist + ' %';
+                moistBar.style.width = moist + '%';
+                moistBar.style.backgroundColor = moist < 20 ? 'var(--red)' : moist < 40 ? 'var(--yellow)' : 'var(--blue)';
+                if (!isNaN(moist) && window.moistHistory) window.moistHistory.push(moist, currentPumpState === '1');
+
+                if (data[2] === '1') {
+                    rainValue.textContent = 'Yağmurlu';
+                    rainValue.className = 'value text-blue';
+                } else {
+                    rainValue.textContent = 'Açık';
+                    rainValue.className = 'value';
+                }
+
+                autoSwitch.disabled = false;
+                autoSwitch.checked = (data[4] === '2');
+                btnAction.disabled = false;
+                btnAction.textContent = currentPumpState === '1' ? 'Sulamayı Kapat' : 'Sulamayı Aç';
+                btnAction.className = currentPumpState === '1' ? 'btn-red' : 'btn-blue';
+
+                let modeText = data[4] === '1' ? '(Manuel)' : data[4] === '0' ? '(Kapalı)' : '(Otomatik)';
+                pumpValue.textContent = (currentPumpState === '1' ? 'Aktif ' : 'Pasif ') + modeText;
+                pumpValue.className = currentPumpState === '1' ? 'value text-green' : 'value text-muted';
+                sendDataToMobile();
+            }
+        }
+
+        async function sendToArduino(cmd) {
+            if (arduinoWriter) { await arduinoWriter.write(new TextEncoder().encode(cmd + "\n")); }
+        }
+
+        autoSwitch.addEventListener('change', (e) => { sendToArduino(e.target.checked ? '2' : '0'); });
+        btnAction.addEventListener('click', () => {
+            let nextCmd = currentPumpState === '1' ? '0' : '1';
+            sendToArduino(nextCmd);
+        });
+
+        // PC sekmesine donuldugunde tarayicinin askida biraktigi kamerayi yenile.
+        window.addEventListener('focus', () => {
+            if (!cameraWriter || cameraInitFailed) return;
+            if (!cameraPending && Date.now() - cameraLastGoodAt > 4500) scheduleCameraFrame(100);
+        });
+        function showCameraMessage(message, error = false) {
+            camStatus.style.display = 'block';
+            camStatus.style.color = error ? 'var(--red)' : 'var(--text-muted)';
+            camStatus.textContent = message;
+            if (error) console.error('[Deneyap Kamera]', message);
+        }
+
+        async function sendToCamera(command) {
+            if (!cameraWriter) throw new Error('Deneyap seri portu bagli degil');
+            return cameraWriter.write(new TextEncoder().encode(command + '\n'));
+        }
+        function clearCameraResponseTimer() {
+            clearTimeout(cameraResponseTimer);
+            cameraResponseTimer = null;
+        }
+        async function requestCameraFrame() {
+            if (!cameraWriter || cameraInitFailed || cameraPending) return;
+            cameraPending = true;
+            clearCameraResponseTimer();
+            // Kamera donarsa, eksik kare yanitini sonsuza kadar bekleme.
+            cameraResponseTimer = setTimeout(() => {
+                if (!cameraPending) return;
+                cameraPending = false;
+                cameraTimeouts++;
+                showCameraMessage('Kamera yaniti gecikti; yeniden deneniyor (' + cameraTimeouts + ')', true);
+                scheduleCameraFrame(1500);
+            }, CAMERA_RESPONSE_TIMEOUT_MS);
+            try { await sendToCamera('N'); }
+            catch(err) {
+                cameraPending = false;
+                clearCameraResponseTimer();
+                showCameraMessage('Kameraya komut gonderilemedi: ' + err.message, true);
+                scheduleCameraFrame(2000);
+            }
+        }
+        function scheduleCameraFrame(delay = CAMERA_FRAME_DELAY_MS) {
+            clearTimeout(cameraFrameTimer);
+            cameraFrameTimer = setTimeout(requestCameraFrame, delay);
+        }
+        function completeCameraRequest() {
+            cameraPending = false;
+            clearCameraResponseTimer();
+        }
+
+        cameraStream.onload = () => {
+            clearTimeout(cameraDecodeTimer);
+            cameraStream.style.display = 'block';
+            camStatus.style.display = 'none';
+            btnConnectCamera.textContent = 'Kamera Goruntusu Aktif';
+            btnConnectCamera.className = 'btn-connected';
+            cameraLastGoodAt = Date.now();
+            cameraTimeouts = 0;
+            connectedPeers.forEach(conn => sendCameraToPeer(conn, latestCameraBase64));
+            if (motionCapturePending && window.captureMotionPhoto) {
+                const info = motionCapturePending;
+                motionCapturePending = null;
+                window.captureMotionPhoto(info);
+            }
+            scheduleCameraFrame();
+        };
+
+        cameraStream.onerror = () => {
+            clearTimeout(cameraDecodeTimer);
+            completeCameraRequest();
+            showCameraMessage('JPEG karesi acilamadi. Yeni kare isteniyor...', true);
+            scheduleCameraFrame(900);
+        };
+
+        btnConnectCamera.addEventListener('click', async () => {
+            if (!('serial' in navigator)) {
+                showCameraMessage('Web Serial desteklenmiyor. Chrome veya Edge ve HTTPS kullanin.', true);
+                return;
+            }
+            try {
+                cameraPort = await navigator.serial.requestPort();
+                await cameraPort.open({ baudRate: 921600, bufferSize: 65536 });
+                cameraWriter = cameraPort.writable.getWriter();
+                firmwareMotionArmed = null;
+                firmwareMotionInterval = null;
+                pirSensorReady = false;
+                updateMotionArm();
+                cameraPending = false;
+                cameraInitFailed = false;
+                cameraLastGoodAt = 0;
+                cameraTimeouts = 0;
+                ptButtons.forEach(b => { b.disabled = false; });
+                setServoStatus('Deneyap servo kontrolu hazir. Kamera portu acik.');
+                btnConnectCamera.textContent = 'Kamera Portu Acik';
+                btnConnectCamera.disabled = true;
+                showCameraMessage('Port acildi. Kameranin baslatilmasi bekleniyor...');
+                readCameraLoop();
+                // READY satiri kart resetlenirken kacmissa bir kare isteyerek dene.
+                setTimeout(() => {
+                    if (!cameraInitFailed && cameraStream.style.display !== 'block') {
+                        requestCameraFrame();
+                    }
+                }, 2500);
+            } catch (err) {
+                showCameraMessage('Seri port acilamadi: ' + err.message, true);
+            }
+        });
+
+        function processCameraLine(line) {
+            line = line.trim();
+            if (!line) return;
+            if (line === 'MOTION,1') { onDeneyapMotionEvent(); return; }
+            if (line.startsWith('PIR_READY,')) {
+                pirSensorReady = line.slice(10) === '1';
+                updateMotionArm();
+                return;
+            }
+            if (line.startsWith('MOTION_ARMED,')) {
+                // Sensor donanimindaki gercek alarm modu, fotografi PC yonetir.
+                return;
+            }
+            if (line === 'READY') {
+                firmwareMotionArmed = null;
+                firmwareMotionInterval = null;
+                updateMotionArm(true);
+                completeCameraRequest();
+                showCameraMessage('Deneyap kamera hazir. Ilk kare isteniyor...');
+                requestCameraFrame();
+                return;
+            }
+            if (line.startsWith('SERVO,')) {
+                const parts = line.split(',');
+                const pan = Number(parts[1]), tilt = Number(parts[2]);
+                if (parts.length === 3 && Number.isInteger(pan) && Number.isInteger(tilt)) {
+                    lastServoPosition = {pan, tilt};
+                    if (window.camPos) window.camPos(pan, tilt);
+                    setServoStatus('Kamera acisi · Sag-sol ' + pan + '° / Yukari-asagi ' + tilt + '°');
+                    broadcast({type:'servo_pos', payload:{pan,tilt}});
+                }
+                return;
+            }
+            if (line === 'PONG') return;
+            if (line.startsWith('ERR:')) {
+                completeCameraRequest();
+                const errorText = line.slice(4);
+                if (errorText.startsWith('CAM_INIT') || errorText === 'CAM_NOT_READY') {
+                    cameraInitFailed = true;
+                    showCameraMessage('Kamera baslatilamadi: ' + errorText + '. Pinleri, FFC kabloyu ve PSRAM ayarini kontrol edin.', true);
+                } else {
+                    showCameraMessage('Deneyap hatasi: ' + errorText, true);
+                    scheduleCameraFrame(1200);
+                }
+                return;
+            }
+            if (!line.startsWith('IMG:')) {
+                console.info('[Deneyap seri]', line.slice(0, 120));
+                return;
+            }
+            completeCameraRequest();
+            const data = line.slice(4);
+            if (data.length < 100 || data.length > 250000 || !/^[A-Za-z0-9+/]+={0,2}$/.test(data)) {
+                showCameraMessage('Eksik veya bozuk JPEG verisi. Yeni kare denenecek.', true);
+                scheduleCameraFrame(900);
+                return;
+            }
+            latestCameraBase64 = data;
+            clearTimeout(cameraDecodeTimer);
+            cameraDecodeTimer = setTimeout(() => {
+                showCameraMessage('JPEG cozumleme gecikti, yeni goruntu isteniyor...', true);
+                scheduleCameraFrame(300);
+            }, 3200);
+            cameraStream.src = 'data:image/jpeg;base64,' + data;
+        }
+
+        async function readCameraLoop() {
+            const decoder = new TextDecoderStream();
+            const pipePromise = cameraPort.readable.pipeTo(decoder.writable);
+            const reader = decoder.readable.getReader();
+            let buffer = '';
+            try {
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+                    buffer += value;
+                    let pos;
+                    while ((pos = buffer.indexOf('\n')) !== -1) {
+                        const line = buffer.slice(0, pos);
+                        buffer = buffer.slice(pos + 1);
+                        processCameraLine(line);
+                    }
+                    if (buffer.length > 260000) {
+                        buffer = '';
+                        completeCameraRequest();
+                        showCameraMessage('Kamera tamponu tasti; veri senkronizasyonu kayboldu.', true);
+                        scheduleCameraFrame(1200);
+                    }
+                }
+            } catch (err) {
+                showCameraMessage('Kamera okuma hatasi: ' + err.message, true);
+            } finally {
+                reader.releaseLock();
+                pipePromise.catch(err => console.error('Kamera akis hatasi:', err));
+                cameraWriter = null;
+                firmwareMotionArmed = null;
+                firmwareMotionInterval = null;
+                pirSensorReady = false;
+                motionCapturePending = null;
+                updateMotionArm();
+                completeCameraRequest();
+                ptButtons.forEach(b => { b.disabled = true; });
+                if (!cameraInitFailed) showCameraMessage('Kamera seri baglantisi sonlandi. Deneyap COM portunu yeniden bagla.', true);
+            }
+        }
+    </script>
+<script>
+(function () {
+    const KEY = 'tarla_nem_gecmisi_v1', MAX = 2000, GAP = 15000;
+    const $ = id => document.getElementById(id);
+    const cv = $('mhCanvas'), ctx = cv.getContext('2d'), wrap = $('mhWrap'), tip = $('mhTip'), empty = $('mhEmpty');
+    const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+    const fmt = (t, s) => new Date(t).toLocaleTimeString('tr-TR', s ? {} : {hour: '2-digit', minute: '2-digit'});
+    let pts = [], range = 1800, hoverX = null, raf = 0, lastSave = 0;
+
+    try {
+        const min = Date.now() - 3600e3;
+        pts = JSON.parse(localStorage.getItem(KEY) || '[]').filter(p => Array.isArray(p) && p[0] > min).map(p => ({t: p[0], v: p[1], p: p[2]}));
+    } catch (e) { pts = []; }
+
+    function save(force) {
+        const n = Date.now();
+        if (!force && n - lastSave < 10000) return;
+        lastSave = n;
+        try { localStorage.setItem(KEY, JSON.stringify(pts.map(p => [p.t, p.v, p.p]))); } catch (e) {}
+    }
+    window.moistHistory = {
+        push(v, pump) {
+            pts.push({t: Date.now(), v: Math.max(0, Math.min(100, v)), p: pump ? 1 : 0});
+            if (pts.length > MAX) pts.shift();
+            save(); draw();
+        }
+    };
+    window.addEventListener('pagehide', () => save(true));
+
+    function stats(list) {
+        if (!list.length) {
+            ['mhNow', 'mhAvg', 'mhMin', 'mhMax'].forEach(i => $(i).textContent = '--');
+            $('mhSub').textContent = 'Veri bekleniyor';
+            return;
+        }
+        const vs = list.map(p => p.v), last = list[list.length - 1];
+        const avg = Math.round(vs.reduce((a, b) => a + b, 0) / vs.length);
+        $('mhNow').textContent = '%' + last.v;
+        $('mhAvg').textContent = '%' + avg;
+        $('mhMin').textContent = '%' + Math.min(...vs);
+        $('mhMax').textContent = '%' + Math.max(...vs);
+        $('mhSub').textContent = list.length + ' ölçüm · son güncelleme ' + fmt(last.t, true);
+        cv.setAttribute('aria-label', 'Toprak nemi grafiği. Son değer %' + last.v + ', ortalama %' + avg);
+    }
+
+    function trace(seg, X, Y) {
+        const path = new Path2D();
+        path.moveTo(X(seg[0].t), Y(seg[0].v));
+        if (seg.length === 1) { path.lineTo(X(seg[0].t) + .1, Y(seg[0].v)); return path; }
+        for (let i = 1; i < seg.length - 1; i++) {
+            const x = X(seg[i].t), y = Y(seg[i].v);
+            path.quadraticCurveTo(x, y, (x + X(seg[i + 1].t)) / 2, (y + Y(seg[i + 1].v)) / 2);
+        }
+        const l = seg[seg.length - 1];
+        path.lineTo(X(l.t), Y(l.v));
+        return path;
+    }
+
+    function render() {
+        const dpr = window.devicePixelRatio || 1, W = wrap.clientWidth, H = wrap.clientHeight;
+        if (!W || !H) return;
+        if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, W, H);
+
+        const now = Date.now(), from = now - range * 1000;
+        const list = pts.filter(p => p.t >= from);
+        stats(list);
+        empty.hidden = list.length > 0;
+
+        const L = 38, R = 10, T = 10, B = 24, pw = W - L - R, ph = H - T - B;
+        const X = t => L + (t - from) / (now - from) * pw, Y = v => T + (1 - v / 100) * ph;
+        const lineC = css('--line'), muted = css('--muted'), blue = css('--blue');
+        ctx.font = '11px ' + css('--font');
+
+        ctx.fillStyle = 'rgba(127,182,154,.06)';
+        ctx.fillRect(L, Y(60), pw, Y(30) - Y(60));
+
+        ctx.strokeStyle = lineC; ctx.lineWidth = 1; ctx.fillStyle = muted;
+        ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+        [0, 25, 50, 75, 100].forEach(v => {
+            const y = Math.round(Y(v)) + .5;
+            ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(L + pw, y); ctx.stroke();
+            ctx.fillText(v + '%', L - 8, y);
+        });
+        ctx.textBaseline = 'top';
+        for (let i = 0; i <= 4; i++) {
+            const t = from + (now - from) * i / 4;
+            ctx.textAlign = i === 0 ? 'left' : i === 4 ? 'right' : 'center';
+            ctx.fillText(fmt(t), i === 0 ? L : i === 4 ? L + pw : X(t), H - B + 8);
+        }
+
+        ctx.setLineDash([4, 4]); ctx.strokeStyle = 'rgba(141,149,164,.55)';
+        [[30, 'sulama başlar'], [60, 'sulama durur']].forEach(([v, label]) => {
+            const y = Math.round(Y(v)) + .5;
+            ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(L + pw, y); ctx.stroke();
+        });
+        ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(141,149,164,.8)'; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+        ctx.fillText('60 · sulama durur', L + pw - 6, Y(60) - 4);
+        ctx.fillText('30 · sulama başlar', L + pw - 6, Y(30) - 4);
+
+        ctx.save();
+        ctx.beginPath(); ctx.rect(L, T - 2, pw, ph + 4); ctx.clip();
+
+        ctx.fillStyle = 'rgba(127,182,154,.13)';
+        list.forEach((p, i) => {
+            if (!p.p) return;
+            const n = list[i + 1], end = n && n.t - p.t <= GAP ? n.t : p.t + 2000;
+            ctx.fillRect(X(p.t), T, Math.max(1, X(end) - X(p.t)), ph);
+        });
+
+        const segs = []; let cur = [];
+        list.forEach(p => {
+            if (cur.length && p.t - cur[cur.length - 1].t > GAP) { segs.push(cur); cur = []; }
+            cur.push(p);
+        });
+        if (cur.length) segs.push(cur);
+
+        const grad = ctx.createLinearGradient(0, T, 0, T + ph);
+        grad.addColorStop(0, 'rgba(126,166,214,.22)'); grad.addColorStop(1, 'rgba(126,166,214,0)');
+        ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+        segs.forEach(seg => {
+            if (seg.length < 2) return;
+            const line = trace(seg, X, Y), area = new Path2D(line);
+            area.lineTo(X(seg[seg.length - 1].t), T + ph); area.lineTo(X(seg[0].t), T + ph); area.closePath();
+            ctx.fillStyle = grad; ctx.fill(area);
+            ctx.strokeStyle = blue; ctx.lineWidth = 2; ctx.stroke(line);
+        });
+        segs.forEach(seg => { if (seg.length === 1) { ctx.fillStyle = blue; ctx.beginPath(); ctx.arc(X(seg[0].t), Y(seg[0].v), 2.5, 0, 7); ctx.fill(); } });
+        ctx.restore();
+
+        const last = list[list.length - 1];
+        if (last && now - last.t < GAP) {
+            ctx.fillStyle = 'rgba(126,166,214,.25)'; ctx.beginPath(); ctx.arc(X(last.t), Y(last.v), 7, 0, 7); ctx.fill();
+            ctx.fillStyle = blue; ctx.beginPath(); ctx.arc(X(last.t), Y(last.v), 3.5, 0, 7); ctx.fill();
+        }
+
+        tip.hidden = true;
+        if (hoverX !== null && list.length && hoverX >= L && hoverX <= L + pw) {
+            let best = null, bd = 1e9;
+            list.forEach(p => { const d = Math.abs(X(p.t) - hoverX); if (d < bd) { bd = d; best = p; } });
+            if (best && bd < 40) {
+                const x = X(best.t), y = Y(best.v);
+                ctx.strokeStyle = 'rgba(232,234,238,.35)'; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(Math.round(x) + .5, T); ctx.lineTo(Math.round(x) + .5, T + ph); ctx.stroke();
+                ctx.fillStyle = css('--surface-2'); ctx.strokeStyle = blue; ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.arc(x, y, 4.5, 0, 7); ctx.fill(); ctx.stroke();
+                tip.innerHTML = '<b>%' + best.v + '</b> · ' + fmt(best.t, true) + '<br>Pompa: ' + (best.p ? 'Açık' : 'Kapalı');
+                tip.hidden = false;
+                const below = y < 64;
+                tip.style.left = Math.max(58, Math.min(W - 58, x)) + 'px';
+                tip.style.top = (below ? y + 14 : y - 14) + 'px';
+                tip.style.transform = below ? 'translate(-50%,0)' : 'translate(-50%,-100%)';
+            }
+        }
+    }
+    function draw() { if (!raf) raf = requestAnimationFrame(() => { raf = 0; render(); }); }
+
+    const move = e => { hoverX = e.clientX - wrap.getBoundingClientRect().left; draw(); };
+    wrap.addEventListener('pointermove', move);
+    wrap.addEventListener('pointerdown', move);
+    wrap.addEventListener('pointerleave', () => { hoverX = null; draw(); });
+    document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+        document.querySelectorAll('.seg button').forEach(x => x.classList.toggle('on', x === b));
+        range = +b.dataset.r; draw();
+    }));
+    $('mhClear').addEventListener('click', () => {
+        pts = [];
+        try { localStorage.removeItem(KEY); } catch (e) {}
+        draw();
+    });
+    if ('ResizeObserver' in window) new ResizeObserver(draw).observe(wrap); else window.addEventListener('resize', draw);
+    setInterval(draw, 2000);
+    draw();
+})();
+</script>
+<script>
+(function () {
+    const $ = id => document.getElementById(id);
+    window.camPos = (pan, tilt) => {
+        const x = Math.max(0, Math.min(1, (pan - 20) / 140)), y = Math.max(0, Math.min(1, 1 - (tilt - 40) / 100));
+        $('posDot').style.left = (x * 100) + '%'; $('posDot').style.top = (y * 100) + '%';
+    };
+    const dirs = {ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0]};
+    let last = 0;
+    const btnFor = k => document.querySelector('.pt-btn[data-dx="' + dirs[k][0] * 10 + '"][data-dy="' + dirs[k][1] * 10 + '"]');
+    const typing = t => t && (['INPUT', 'TEXTAREA', 'SELECT'].includes(t.tagName) || t.isContentEditable);
+    const ready = () => typeof cameraWriter !== 'undefined' && cameraWriter && !$('ptHome').disabled && !document.querySelector('.viewer.open');
+    window.addEventListener('keydown', e => {
+        if (typing(e.target) || e.ctrlKey || e.metaKey || e.altKey || !ready()) return;
+        if (e.key === 'Home') { e.preventDefault(); $('ptHome').click(); return; }
+        if (!(e.key in dirs)) return;
+        e.preventDefault();
+        const b = btnFor(e.key); if (b) b.classList.add('pressed');
+        const now = performance.now();
+        if (now - last < 110) return;
+        last = now;
+        const s = e.shiftKey ? 3 : 10, d = dirs[e.key];
+        moveCamera(d[0] * s, d[1] * s);
+    });
+    window.addEventListener('keyup', e => { if (e.key in dirs) { const b = btnFor(e.key); if (b) b.classList.remove('pressed'); } });
+    window.addEventListener('blur', () => document.querySelectorAll('.pt-btn.pressed').forEach(b => b.classList.remove('pressed')));
+    const bq = $('btnQRMode');
+    bq.addEventListener('click', () => {
+        qrLight = !qrLight;
+        bq.textContent = qrLight ? 'Koyu zemine dön' : 'Okunmuyorsa açık zemin kullan';
+        if (lastQRId) renderFarmQR(lastQRId);
+    });
+})();
+</script>
+<script>
+(function (CFG) {
+    const $ = id => document.getElementById(id);
+    const img = $(CFG.img), box = img.parentElement;
+    const bPhoto = $('btnPhoto'), bRec = $('btnRec'), bRecText = $('btnRecText'), shots = $('shots'), note = $('capNote');
+    const p2 = n => String(n).padStart(2, '0');
+    const canRec = typeof MediaRecorder !== 'undefined' && !!HTMLCanvasElement.prototype.captureStream;
+    const badge = document.createElement('div'); badge.className = 'rec-badge'; badge.hidden = true; box.appendChild(badge);
+    let rec = null, drawTimer = 0, tickTimer = 0, chunks = [], t0 = 0, code = '', cvR = null;
+    if (!canRec) bRec.title = 'Bu tarayıcı video kaydını desteklemiyor';
+
+    function nextCode() {
+        const d = new Date(), ymd = String(d.getFullYear()).slice(2) + p2(d.getMonth() + 1) + p2(d.getDate());
+        const key = 'tarla_kayit_sayac_' + CFG.dev + '_' + ymd;
+        let n;
+        try { n = (parseInt(localStorage.getItem(key) || '0', 10) || 0) + 1; localStorage.setItem(key, String(n)); }
+        catch (e) { n = Math.floor(Math.random() * 9000) + 1000; }
+        return 'KYT-' + ymd + '-' + CFG.dev + '-' + String(n).padStart(4, '0');
+    }
+    const frameReady = () => img.complete && img.naturalWidth > 0 && getComputedStyle(img).display !== 'none';
+    function newCanvas() {
+        const k = Math.max(1, Math.round(640 / img.naturalWidth)), c = document.createElement('canvas');
+        c.width = img.naturalWidth * k; c.height = img.naturalHeight * k;
+        return c;
+    }
+    function stamp(x, W, H, cd) {
+        const d = new Date(), pad = Math.round(H * .03), f1 = Math.max(14, Math.round(H * .042)), f2 = Math.round(f1 * .78);
+        const ui = getComputedStyle(document.body).fontFamily;
+        const t1 = p2(d.getDate()) + '.' + p2(d.getMonth() + 1) + '.' + d.getFullYear() + '  ' + p2(d.getHours()) + ':' + p2(d.getMinutes()) + ':' + p2(d.getSeconds());
+        const t2 = 'Kayıt kodu  ' + cd;
+        x.font = '600 ' + f1 + 'px ' + ui; const w1 = x.measureText(t1).width;
+        x.font = '500 ' + f2 + 'px ' + ui; const w2 = x.measureText(t2).width;
+        const ip = Math.round(pad * .75), bw = Math.max(w1, w2) + ip * 2, bh = f1 + f2 + ip * 2 + Math.round(f1 * .25);
+        const bx = pad, by = H - pad - bh;
+        x.fillStyle = 'rgba(10,12,16,.68)'; x.beginPath();
+        if (x.roundRect) x.roundRect(bx, by, bw, bh, Math.round(f1 * .45)); else x.rect(bx, by, bw, bh);
+        x.fill();
+        x.textBaseline = 'top'; x.textAlign = 'left';
+        x.fillStyle = '#f1f3f6'; x.font = '600 ' + f1 + 'px ' + ui; x.fillText(t1, bx + ip, by + ip);
+        x.fillStyle = '#8fc7aa'; x.font = '500 ' + f2 + 'px ' + ui; x.fillText(t2, bx + ip, by + ip + f1 + Math.round(f1 * .25));
+    }
+    function paint(c, cd) {
+        const x = c.getContext('2d');
+        if (frameReady()) x.drawImage(img, 0, 0, c.width, c.height);
+        stamp(x, c.width, c.height, cd);
+    }
+    function thumbOf(c) {
+        const t = document.createElement('canvas'); t.width = 208; t.height = Math.round(208 * c.height / c.width);
+        t.getContext('2d').drawImage(c, 0, 0, t.width, t.height);
+        return t.toDataURL('image/jpeg', .7);
+    }
+    function download(url, name) {
+        const a = document.createElement('a'); a.href = url; a.download = name;
+        document.body.appendChild(a); a.click(); a.remove();
+    }
+    async function saveItem(it) {
+        if (CFG.dev === 'MB' && navigator.canShare) {
+            try {
+                const f = new File([it.blob], it.name, {type: it.blob.type});
+                if (navigator.canShare({files: [f]})) { await navigator.share({files: [f], title: it.code}); return; }
+            } catch (e) { if (e && e.name === 'AbortError') return; }
+        }
+        download(it.url, it.name);
+    }
+    function addShot(it) {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'shot';
+        b.title = it.name + ' · izlemek için tıkla';
+        b.innerHTML = '<img alt=""><span class="shot-kind"></span><span class="shot-meta"></span>';
+        b.querySelector('img').src = it.thumb;
+        b.querySelector('.shot-kind').textContent = it.kind;
+        b.querySelector('.shot-meta').textContent = it.code;
+        b._it = it; b.addEventListener('click', () => openViewer(it)); if (it.kind === 'VİDEO') b.classList.add('is-video');
+        shots.prepend(b); shots.hidden = false;
+        while (shots.children.length > 12) {
+            const old = shots.lastElementChild; shots.removeChild(old);
+            if (old._url) URL.revokeObjectURL(old._url);
+        }
+        b._url = it.url;
+    }
+    function finish(blob, ext, cd, kind, c, motionInfo = null) {
+        const it = {blob, url: URL.createObjectURL(blob), name: 'tarla_' + cd + '.' + ext, kind, code: cd, thumb: thumbOf(c)};
+        addShot(it);
+        if (CFG.dev === 'PC') download(it.url, it.name);
+        note.textContent = (CFG.dev === 'PC' ? 'Kaydedildi · izlemek için küçük resme tıkla · ' : 'Hazır · izlemek için küçük resme dokun · ') + it.name;
+        if (motionInfo && CFG.dev === 'PC') {
+            publishMotionPhoto(c, cd, motionInfo.at);
+            displayMotionAlert('Hareket fotoğrafı kaydedildi · ' + cd, motionSwitch.checked);
+            if (typeof sendMotionMail === 'function') sendMotionMail(blob, cd);
+        }
+    }
+    function photo() {
+        if (!frameReady()) return;
+        const c = newCanvas(), cd = nextCode(); paint(c, cd);
+        c.toBlob(b => { if (b) finish(b, 'jpg', cd, 'FOTO', c); }, 'image/jpeg', .92);
+    }
+    // PC kamerasina gelen yeni JPEG karesini otomatik hareket kaydina donustur.
+    function combineSideBySide(a, b) {
+        const gap = 6, c = document.createElement('canvas');
+        c.width = a.width + gap + b.width; c.height = Math.max(a.height, b.height);
+        const x = c.getContext('2d'); x.fillStyle = '#0a0c10'; x.fillRect(0, 0, c.width, c.height);
+        x.drawImage(a, 0, 0); x.drawImage(b, a.width + gap, 0);
+        return c;
+    }
+    // Hareket: 1. foto -> kamera 100°/50° -> 2. foto -> yan yana tek JPEG -> kamera eski açıya döner.
+    if (CFG.dev === 'PC') window.captureMotionPhoto = async motionInfo => {
+        if (!frameReady()) {
+            if (motionSwitch.checked) displayMotionAlert('Hareket algılandı fakat kamera karesi alınamadı.', true);
+            return;
+        }
+        motionSequenceBusy = true;
+        try {
+            const cd = nextCode();
+            const c1 = newCanvas(); paint(c1, cd);
+            const start = lastServoPosition ? {pan: lastServoPosition.pan, tilt: lastServoPosition.tilt} : {pan: 90, tilt: 90};
+            let c2 = null;
+            displayMotionAlert('Hareket algılandı · 1. fotoğraf alındı, kamera ikinci açıya gidiyor…', false);
+            if (await goToServo(SEQ_PAN, SEQ_TILT)) {
+                await seqSleep(SEQ_SETTLE_MS);
+                await nextCameraFrame();                       // eski/titrek kareyi atla
+                if (await nextCameraFrame() && frameReady()) { c2 = newCanvas(); paint(c2, cd); }
+            }
+            if (!motionWanted()) {                              // dizi sürerken kapatıldı: kaydetme/gönderme
+                await goToServo(start.pan, start.tilt);
+                await seqSleep(SEQ_SETTLE_MS);
+                return;
+            }
+            const out = c2 ? combineSideBySide(c1, c2) : c1;   // 2. foto alınamazsa 1. foto tek başına kaydedilir
+            await new Promise(res => out.toBlob(blob => {
+                if (blob) finish(blob, 'jpg', cd, 'HAREKET', out, motionInfo);
+                else if (motionSwitch.checked) displayMotionAlert('Hareket fotoğrafı oluşturulamadı.', true);
+                res();
+            }, 'image/jpeg', .90));
+            await goToServo(start.pan, start.tilt);            // kamerayı ilk konumuna geri getir
+            await seqSleep(SEQ_SETTLE_MS);                     // servo titremesi yeni hareket sayılmasın
+        } catch (err) {
+            console.warn('[Hareket dizisi]', err);
+        } finally {
+            motionSequenceBusy = false;
+        }
+    };
+    function tick() {
+        const s = Math.floor((Date.now() - t0) / 1000), t = p2(Math.floor(s / 60)) + ':' + p2(s % 60);
+        bRecText.textContent = 'Kaydı durdur · ' + t;
+        badge.textContent = 'REC ' + t + ' · ' + code;
+        if (s > 1800) stopRec();
+    }
+    function startRec() {
+        if (rec || !canRec || !frameReady()) return;
+        cvR = newCanvas(); code = nextCode(); paint(cvR, code);
+        const mime = ['video/mp4;codecs=avc1.42E01E', 'video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'].find(m => MediaRecorder.isTypeSupported(m));
+        try {
+            rec = new MediaRecorder(cvR.captureStream(5), mime ? {mimeType: mime, videoBitsPerSecond: 1500000} : undefined);
+        } catch (e) { rec = null; note.textContent = 'Video kaydı başlatılamadı.'; return; }
+        chunks = [];
+        rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+        rec.onstop = () => {
+            clearInterval(drawTimer); clearInterval(tickTimer);
+            badge.hidden = true; bRec.classList.remove('on'); bRecText.textContent = 'Kayıt başlat';
+            const type = /mp4/.test((rec && rec.mimeType) || mime || '') ? 'video/mp4' : 'video/webm';
+            const blob = new Blob(chunks, {type});
+            rec = null;
+            if (blob.size) finish(blob, /mp4/.test(type) ? 'mp4' : 'webm', code, 'VİDEO', cvR);
+        };
+        rec.start(1000); t0 = Date.now();
+        drawTimer = setInterval(() => paint(cvR, code), 200);
+        tickTimer = setInterval(tick, 500);
+        bRec.classList.add('on'); badge.hidden = false; note.textContent = ''; tick();
+    }
+    function stopRec() { if (rec && rec.state !== 'inactive') rec.stop(); }
+
+        const vw = document.createElement('div');
+    vw.className = 'viewer'; vw.id = 'capViewer';
+    vw.setAttribute('role', 'dialog'); vw.setAttribute('aria-modal', 'true'); vw.setAttribute('aria-label', 'Çekim önizleme');
+    vw.innerHTML = '<button type="button" class="viewer-nav prev" aria-label="Daha yeni çekim">‹</button><div class="viewer-box"><div class="viewer-media"></div><div class="viewer-bar"><div class="viewer-info"><span class="viewer-kind"></span><span class="viewer-code"></span></div><div class="viewer-actions"><button type="button" class="viewer-save"></button><button type="button" class="viewer-close">Kapat</button></div></div></div><button type="button" class="viewer-nav next" aria-label="Daha eski çekim">›</button>';
+    document.body.appendChild(vw);
+    const vMedia = vw.querySelector('.viewer-media'), vPrev = vw.querySelector('.prev'), vNext = vw.querySelector('.next');
+    vw.querySelector('.viewer-save').textContent = CFG.dev === 'PC' ? 'İndir' : 'Kaydet / Paylaş';
+    let cur = null, lastFocus = null;
+    const order = () => [...shots.children].map(x => x._it);
+    function show(it) {
+        cur = it; vMedia.replaceChildren();
+        let el;
+        if (it.kind === 'VİDEO') {
+            el = document.createElement('video'); el.controls = true; el.autoplay = true; el.playsInline = true; el.setAttribute('playsinline', ''); el.src = it.url;
+            el.addEventListener('loadedmetadata', () => {
+                if (!isFinite(el.duration)) {
+                    el.currentTime = 1e101;
+                    el.addEventListener('timeupdate', function f() { el.removeEventListener('timeupdate', f); el.currentTime = 0; });
+                }
+            });
+        } else { el = document.createElement('img'); el.src = it.url; el.alt = it.code; }
+        vMedia.appendChild(el);
+        vw.querySelector('.viewer-kind').textContent = it.kind;
+        vw.querySelector('.viewer-code').textContent = it.code;
+        const o = order(), i = o.indexOf(it);
+        vPrev.hidden = !o[i - 1]; vNext.hidden = !o[i + 1];
+    }
+    function openViewer(it) {
+        lastFocus = document.activeElement;
+        vw.classList.add('open'); document.body.style.overflow = 'hidden';
+        show(it); vw.querySelector('.viewer-close').focus();
+    }
+    function closeViewer() {
+        vw.classList.remove('open'); document.body.style.overflow = '';
+        const v = vMedia.querySelector('video');
+        if (v) { v.pause(); v.removeAttribute('src'); v.load(); }
+        vMedia.replaceChildren(); cur = null;
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    function step(d) { const o = order(), n = o[o.indexOf(cur) + d]; if (n) show(n); }
+    vw.addEventListener('click', e => { if (e.target === vw) closeViewer(); });
+    vw.querySelector('.viewer-close').addEventListener('click', closeViewer);
+    vw.querySelector('.viewer-save').addEventListener('click', () => { if (cur) saveItem(cur); });
+    vPrev.addEventListener('click', () => step(-1));
+    vNext.addEventListener('click', () => step(1));
+    window.addEventListener('keydown', e => {
+        if (!vw.classList.contains('open')) return;
+        if (e.key === 'Escape') { e.preventDefault(); closeViewer(); }
+        else if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && e.target.tagName !== 'VIDEO') { e.preventDefault(); step(e.key === 'ArrowLeft' ? -1 : 1); }
+    });
+
+    bPhoto.addEventListener('click', photo);
+    bRec.addEventListener('click', () => rec ? stopRec() : startRec());
+    setInterval(() => {
+        const ok = frameReady();
+        bPhoto.disabled = !ok;
+        bRec.disabled = rec ? false : !(ok && canRec);
+    }, 600);
+    window.addEventListener('beforeunload', e => { if (rec) { e.preventDefault(); e.returnValue = ''; } });
+    if (CFG.keys) window.addEventListener('keydown', e => {
+        const t = e.target;
+        if (t && (['INPUT', 'TEXTAREA', 'SELECT'].includes(t.tagName) || t.isContentEditable)) return;
+        if (e.ctrlKey || e.metaKey || e.altKey || e.repeat || vw.classList.contains('open')) return;
+        if (e.key === 'p' || e.key === 'P') { if (!bPhoto.disabled) bPhoto.click(); }
+        else if (e.key === 'r' || e.key === 'R') { if (!bRec.disabled) bRec.click(); }
+    });
+})({img: 'cameraStream', dev: 'PC', keys: true});
+</script>
+</body>
+</html>

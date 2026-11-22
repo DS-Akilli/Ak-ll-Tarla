@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- iOS Ana Ekran ikonu -->
+    <link rel="apple-touch-icon" href="fav.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="fav.png">
+
+    <!-- Uygulama gibi açılması için -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Akıllı Tarla">
+
+    <!-- Modern PWA desteği (opsiyonel ama önerilir) -->
+    <meta name="theme-color" content="#0e1013">
+    <link rel="manifest" href="manifest.json">
+    <title>Akilli Tarla Mobil | Elegan Studios</title>
+    <link rel="icon" type="image/png" href="fav.png">
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsQR@1.4.0/dist/jsQR.min.js"></script>
+    <style>
+:root{--bg:#0e1013;--surface:#151820;--surface-2:#1b1f29;--line:#262b36;--line-2:#323847;--text:#e8eaee;--muted:#8d95a4;--accent:#7fb69a;--accent-ink:#0d1712;
+--blue:#7ea6d6;--green:#7fb69a;--red:#dc7f76;--yellow:#d9b564;
+--bg-color:var(--bg);--panel-bg:var(--surface);--border-color:var(--line);--text-main:var(--text);--text-muted:var(--muted);
+--font:"Inter","Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);margin:0;line-height:1.5;-webkit-font-smoothing:antialiased}
+.brand{display:flex;align-items:center;gap:12px;margin:0 0 24px}
+.brand-mark{flex:none;width:34px;height:34px;border-radius:4px 17px 4px 17px;background:var(--accent)}
+.brand h1{margin:0;font-size:20px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.brand p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.section-title{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:26px 0 12px}
+.brand+.section-title,.section-title:first-child{margin-top:0}
+.container{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px}
+.camera-box{width:100%;aspect-ratio:16/10;background:#0a0c10;border:1px solid var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.camera-box img{width:100%;height:100%;object-fit:cover;display:none}
+.camera-placeholder{color:var(--muted);font-size:13px;text-align:center;padding:12px}
+.data-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.data-card{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:16px}
+.data-card.full-width{grid-column:span 2}
+h3{margin:0 0 8px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.value{font-size:24px;font-weight:500;margin:0;letter-spacing:-.01em;font-variant-numeric:tabular-nums;transition:color .3s}
+.progress-bg{background:var(--line);height:6px;border-radius:3px;margin-top:14px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:var(--blue);transition:width .6s ease,background-color .3s;border-radius:3px}
+.controls{display:flex;flex-direction:column;gap:12px}
+.connect-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{font:inherit;font-size:14px;font-weight:500;padding:13px 16px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);border-radius:12px;cursor:pointer;width:100%;transition:background .2s,border-color .2s,transform .1s}
+button:hover:not(:disabled){background:#222735;border-color:#434a5d}
+button:active:not(:disabled){transform:scale(.985)}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.btn-blue,.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn-blue:hover:not(:disabled),.btn-primary:hover:not(:disabled){background:#92c4aa;border-color:#92c4aa}
+.btn-red{background:var(--red);border-color:var(--red);color:#241110;font-weight:600}
+.btn-red:hover:not(:disabled){background:#e5918a;border-color:#e5918a}
+.btn-outline{background:transparent;color:var(--text)}
+.btn-connected{background:rgba(127,182,154,.1)!important;border-color:rgba(127,182,154,.4)!important;color:var(--accent)!important}
+.btn-connected:before{content:"\2713  "}
+.auto-control-box{display:flex;justify-content:space-between;align-items:center;background:var(--surface-2);padding:12px 16px;border-radius:12px;border:1px solid var(--line)}
+.auto-text{font-size:14px;font-weight:500}
+.switch{position:relative;display:inline-block;width:46px;height:26px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:var(--line-2);transition:.25s;border-radius:34px}
+.slider:before{position:absolute;content:"";height:20px;width:20px;left:3px;bottom:3px;background:#fff;transition:.25s;border-radius:50%}
+input:checked+.slider{background:var(--accent)}
+input:checked+.slider:before{transform:translateX(20px)}
+input:focus-visible+.slider{outline:2px solid var(--blue);outline-offset:2px}
+input[type=text],input:not([type]){font:inherit}
+.footer{margin-top:24px;text-align:center;font-size:11px;color:#4a5163;letter-spacing:.14em}
+.text-blue{color:var(--blue)}.text-green{color:var(--green)}.text-red{color:var(--red)}.text-muted{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+body{padding:14px 12px max(14px,env(safe-area-inset-bottom));min-height:100vh}
+.container{max-width:440px;margin:0 auto;padding:22px 20px}
+#connectScreen{text-align:center}
+.heading-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:0 0 14px}
+.heading-row h2{margin:0;font-size:18px;font-weight:600;letter-spacing:-.01em}
+.heading-row span{color:var(--muted);font-size:12px}
+.farm-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.farm-item{border:1px solid var(--line);background:var(--surface-2);border-radius:14px;padding:16px;text-align:left}
+.farm-item-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.farm-name{font-size:16px;font-weight:600;overflow-wrap:anywhere}
+.farm-description{font-size:12px;color:var(--muted);margin:6px 0 14px;overflow-wrap:anywhere}
+.farm-actions{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center}
+.farm-actions button{padding:10px 12px;font-size:12px}
+.farm-actions .open-farm{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+.farm-actions .secondary-action{width:auto}
+.muted-note{color:var(--muted);font-size:12px;line-height:1.6;margin:0 0 14px}
+.hint{font-size:12px;color:var(--muted);margin:0 0 10px;line-height:1.5}
+.scanner-tip{font-size:12px;color:var(--muted);line-height:1.55;text-align:center;margin:8px 0 14px}
+.scanner-status-ok{color:var(--accent)!important}.scanner-status-error{color:var(--red)!important}
+.camera-wrap{position:relative;width:100%;max-width:340px;margin:0 auto 12px;border-radius:16px;overflow:hidden;background:#0a0c10;aspect-ratio:3/4;border:1px solid var(--line)}
+#video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+.scan-frame{position:absolute;left:9%;top:19%;width:82%;aspect-ratio:1;border:2px solid rgba(232,234,238,.85);border-radius:18px;box-shadow:0 0 0 9999px rgba(0,0,0,.4);pointer-events:none}
+#qrImageFile{display:none}
+.scan-status{font-size:12px;color:var(--muted);margin:8px 0;min-height:18px}
+.scan-secondary{margin-top:8px}
+.manual-id{margin-top:18px}
+.manual-id input,#manualPeerId{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);font-size:13px;margin-bottom:10px;text-align:center;font-family:ui-monospace,Consolas,monospace}
+#newFarmSection{display:none}
+#newFarmSection button+button,#newFarmSection .btn-outline{margin-top:8px}
+#dashboard{display:none}
+.top-controls{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:16px}
+.btn-small{width:auto;padding:8px 14px;font-size:12px}
+#activeFarmName{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0 0 12px;overflow-wrap:anywhere}
+.status-bar{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 12px;border-radius:12px;margin-bottom:16px;font-size:12px;border:1px solid #5a4a22;background:rgba(217,181,100,.07);color:var(--yellow);line-height:1.5}
+.status-bar:before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:currentColor}
+.status-bar.connected{border-color:rgba(127,182,154,.4);background:rgba(127,182,154,.08);color:var(--accent)}
+.status-bar.offline{border-color:#5a4a22;color:var(--yellow)}
+.camera-box{height:auto;aspect-ratio:4/3}
+.camera-pan-area{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab}
+.camera-pan-area:active{cursor:grabbing}
+.camera-box img{pointer-events:none;user-select:none;-webkit-user-drag:none}
+.gesture-hint{color:var(--muted);font-size:12px;text-align:center;margin:10px 0 4px}
+.servo-angle-text{color:var(--muted);font-size:12px;text-align:center;margin:0 0 12px;font-variant-numeric:tabular-nums}
+.servo-center{margin:0}
+.value{font-size:22px}
+.overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(8,9,12,.78);z-index:100}
+.modal{width:min(420px,100%);border:1px solid var(--line-2);border-radius:20px;padding:24px;background:var(--surface)}
+.modal h2{font-size:19px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px}
+.modal p{font-size:13px;line-height:1.6;color:var(--muted);margin:0 0 16px}
+.modal label{display:block;margin-bottom:6px;font-size:12px;font-weight:500}
+.modal input{width:100%;background:var(--surface-2);border:1px solid var(--line-2);border-radius:10px;padding:13px;color:var(--text);font-size:14px;margin-bottom:16px}
+.modal-buttons{display:flex;gap:10px}
+.modal-buttons button{flex:1}
+
+.cap-bar{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.cap-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 12px;font-size:13px}
+.cap-btn svg{flex:none}
+.cap-btn .rec-dot{width:9px;height:9px;border-radius:50%;background:var(--red);flex:none}
+.cap-btn.on{background:rgba(220,127,118,.14);border-color:rgba(220,127,118,.5);color:var(--red)}
+.cap-btn.on .rec-dot{animation:recpulse 1.2s ease-in-out infinite}
+@keyframes recpulse{50%{opacity:.25}}
+.rec-badge{position:absolute;top:10px;left:10px;z-index:3;display:flex;align-items:center;gap:8px;padding:5px 11px;border-radius:999px;background:rgba(10,12,16,.72);color:#f1f3f6;font-size:12px;font-variant-numeric:tabular-nums;pointer-events:none}
+.rec-badge:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--red)}
+.rec-badge[hidden],.shots[hidden]{display:none}
+.cap-note{font-size:12px;color:var(--muted);margin:10px 0 0;min-height:0;overflow-wrap:anywhere}
+.cap-note:empty{display:none}
+.shots{display:flex;gap:10px;overflow-x:auto;padding:12px 0 2px;scrollbar-width:thin}
+.shot{position:relative;flex:none;width:104px;padding:0;border-radius:10px;overflow:hidden;border:1px solid var(--line-2);background:var(--surface);text-align:left}
+.shot img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.shot-kind{position:absolute;top:6px;left:6px;background:rgba(10,12,16,.75);color:#f1f3f6;font-size:9px;font-weight:600;letter-spacing:.06em;padding:2px 6px;border-radius:6px}
+.shot-meta{display:block;padding:6px 8px;font:500 10px/1.3 var(--font);color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.scan-frame{border:0;border-radius:20px;background:
+linear-gradient(#e8eaee,#e8eaee) top left/28px 3px no-repeat,linear-gradient(#e8eaee,#e8eaee) top left/3px 28px no-repeat,
+linear-gradient(#e8eaee,#e8eaee) top right/28px 3px no-repeat,linear-gradient(#e8eaee,#e8eaee) top right/3px 28px no-repeat,
+linear-gradient(#e8eaee,#e8eaee) bottom left/28px 3px no-repeat,linear-gradient(#e8eaee,#e8eaee) bottom left/3px 28px no-repeat,
+linear-gradient(#e8eaee,#e8eaee) bottom right/28px 3px no-repeat,linear-gradient(#e8eaee,#e8eaee) bottom right/3px 28px no-repeat}
+
+.shot{cursor:pointer}
+.shot.is-video:after{content:"";position:absolute;left:calc(50% - 15px);top:calc(104px * .375 - 15px);width:30px;height:30px;border-radius:50%;background:rgba(10,12,16,.72) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 6l9 6-9 6z' fill='%23f1f3f6'/%3E%3C/svg%3E") center/18px no-repeat;pointer-events:none}
+.viewer{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;gap:12px;padding:16px;background:rgba(8,9,12,.9)}
+.viewer.open{display:flex}
+.viewer button{width:auto}
+.viewer-box{flex:0 1 auto;width:fit-content;min-width:min(320px,100%);max-width:calc(100% - 112px);display:flex;flex-direction:column;gap:12px}
+.viewer-media{display:flex;justify-content:center}
+.viewer-media img,.viewer-media video{display:block;max-width:100%;max-height:calc(100vh - 140px);max-height:calc(100dvh - 140px);border-radius:14px;background:#000}
+.viewer-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.viewer-info{display:flex;align-items:center;gap:10px;min-width:0;font-size:13px}
+.viewer-kind{padding:2px 8px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line-2);font-size:10px;font-weight:600;letter-spacing:.06em}
+.viewer-code{color:var(--muted);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.viewer-actions{display:flex;gap:8px}
+.viewer-save{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.viewer-save:hover:not(:disabled){background:#92c4aa;border-color:#92c4aa}
+.viewer-nav{flex:none;width:44px!important;height:44px;padding:0;border-radius:50%;font-size:24px;line-height:1}
+.viewer-nav[hidden]{display:none}
+@media (max-width:640px){.viewer-box{max-width:calc(100% - 80px)}.viewer{padding:12px 8px;gap:4px}.viewer-nav{width:36px!important;height:36px;font-size:20px}}
+
+/* PIR hareket algilama ve bildirim alanlari */
+.motion-config{margin:12px 0;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 15px}
+.motion-config .auto-control-box{border:0;background:transparent;padding:0}
+.motion-help{font-size:12px;color:var(--muted);line-height:1.5;margin:9px 0 0}
+.motion-interval-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 0;font-size:13px;color:var(--text)}
+.motion-interval-row select{min-width:112px;padding:8px 10px;background:var(--surface);color:var(--text);border:1px solid var(--line-2);border-radius:9px;font:inherit}
+.motion-saved{margin-top:5px;font-size:11px;color:var(--muted)}
+.motion-alert{font-size:12px;margin:10px 0 0;padding:11px 12px;border-radius:10px;border:1px solid rgba(217,181,100,.5);background:rgba(217,181,100,.08);color:var(--yellow)}
+.motion-alert[hidden]{display:none}
+</style>
+</head>
+<body class="safe-area">
+    <div class="container">
+        <header class="brand"><span class="brand-mark" aria-hidden="true"></span><div><h1>Akıllı Tarla</h1><p>Elegan Studios · Mobil kontrol</p></div></header>
+        <div id="connectScreen">
+            <div class="heading-row"><h2>Tarlalarım</h2><span style="color:#888;font-size:12px" id="farmCount"></span></div>
+            <div id="savedFarmsList" class="farm-list"></div>
+            <p class="muted-note" id="savedHint">Kaydettiğin tarlalara, tekrar QR okutmaya gerek kalmadan bağlanabilirsin.</p>
+            <button id="btnAddFarm" type="button" class="btn-primary">+ Yeni Tarla Ekle</button>
+
+            <div id="newFarmSection">
+                <p class="section-title">Yeni tarla bağla</p>
+                <p class="hint">Bilgisayardaki Akıllı Tarla QR kodunu okut. Yalnızca ilk eşleştirmede gerekli.</p>
+                <p class="scanner-tip">QR'ı kameraya tam göster, ekrandan yaklaşık 15–25 cm uzak tut ve yeterli ışık kullan.</p>
+                <div class="camera-wrap">
+                    <video id="video" playsinline muted autoplay></video>
+                    <div class="scan-frame"></div>
+                </div>
+                <canvas id="scanCanvas" style="display:none;"></canvas>
+                <p class="scan-status" id="scanStatus" role="status" aria-live="polite">QR taramayı başlat</p>
+                <button id="btnStartScan" class="btn-primary" type="button">Kamerayı Aç / Yeniden Dene</button>
+                <button id="btnPickQRImage" class="scan-secondary" type="button">QR Fotoğrafından Oku</button>
+                <input id="qrImageFile" type="file" accept="image/*" aria-label="QR kod fotoğrafı seç">
+                <p class="scanner-tip">İstersen telefonunun normal Kamera uygulamasıyla PC'deki QR'ı okutabilirsin; bağlantı sayfası doğrudan açılır.</p>
+                <div class="manual-id">
+                    <p class="hint">QR okuyamıyorsan bilgisayardaki kalıcı Peer ID'yi yazabilirsin:</p>
+                    <input type="text" id="manualPeerId" placeholder="Tarla Peer ID" autocomplete="off">
+                    <button id="btnManualConnect" class="btn-primary" type="button">Bağlan</button>
+                </div>
+                <button id="btnCancelAdd" class="btn-outline" type="button">İptal / Tarlalarım</button>
+            </div>
+        </div>
+
+        <div id="dashboard">
+            <div class="top-controls">
+                <button class="btn-outline btn-small" id="btnBackToFarms" type="button">← Tarlalarım</button>
+                <button class="btn-outline btn-small" id="btnRetry" type="button">Yeniden Bağlan</button>
+            </div>
+            <h2 id="activeFarmName">Tarla</h2>
+            <div class="status-bar" id="statusBar">Bağlanıyor...</div>
+            <button class="btn-outline" id="btnSaveFarm" type="button" style="display:none; margin-bottom:15px;">Bu Tarlayı Kaydet</button>
+            <h2 class="section-title">Canlı kamera</h2>
+            <div class="camera-box camera-pan-area" id="cameraPanArea" aria-label="Kamerayi kaydirarak hareket ettir">
+                <span class="camera-placeholder" id="mobCamStatus">Kamera Görüntüsü Bekleniyor...</span>
+                <img id="mobileCameraStream" style="display:none;" alt="Tarla kamerası" draggable="false">
+            </div>
+            <div class="cap-bar">
+                <button type="button" id="btnPhoto" class="cap-btn" disabled><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Fotoğraf çek</button>
+                <button type="button" id="btnRec" class="cap-btn" disabled><span class="rec-dot" aria-hidden="true"></span><span id="btnRecText">Kayıt başlat</span></button>
+            </div>
+            <p class="cap-note" id="capNote" aria-live="polite"></p>
+            <div class="shots" id="shots" hidden aria-label="Son çekimler"></div>
+                <div class="motion-config">
+                    <div class="auto-control-box">
+                        <span class="auto-text">Hareket Bildirimi</span>
+                        <label class="switch"><input type="checkbox" id="motionSwitch" aria-label="Hareket bildirimlerini aç veya kapat"><span class="slider"></span></label>
+                    </div>
+                    <label class="motion-interval-row" for="motionInterval"><span>Fotoğraflar arası en az</span>
+                        <select id="motionInterval" aria-label="Hareket fotoğrafı çekim aralığı">
+                            <option value="3">3 saniye</option><option value="5" selected>5 saniye</option>
+                            <option value="10">10 saniye</option><option value="15">15 saniye</option>
+                            <option value="30">30 saniye</option>
+                        </select>
+                    </label>
+                    <p class="motion-saved">Bu cihazın seçimi otomatik kaydedilir. Sensör HIGH kaldığında tekrar çekim yapılabilir.</p>
+                    <p class="motion-help" id="motionStatus">Kapalı · Servo durduğunda hareket algılanır ve fotoğraf çekilir.</p>
+                    <p class="motion-alert" id="motionAlert" role="status" aria-live="polite" hidden></p>
+                </div>
+            <p class="gesture-hint">Görüntüyü sağa / sola / yukarı / aşağı sürükleyerek kamerayı hareket ettir.</p>
+            <p class="servo-angle-text" id="mobileServoStatus" aria-live="polite">Servo kontrolü için tarla bağlantısı bekleniyor.</p>
+            <button id="btnServoCenter" type="button" class="btn-outline servo-center" disabled>◎ Kamerayı Ortala</button>
+            <h2 class="section-title">Sensör verileri</h2>
+            <div class="data-grid">
+                <div class="data-card"><h3>Sıcaklık</h3><p class="value" id="tempValue">-- °C</p></div>
+                <div class="data-card"><h3>Hava Durumu</h3><p class="value" id="rainValue">--</p></div>
+                <div class="data-card full-width">
+                    <h3>Toprak Nemi</h3><p class="value" id="moistValue">-- %</p>
+                    <div class="progress-bg"><div class="progress-fill" id="moistBar"></div></div>
+                </div>
+                <div class="data-card full-width"><h3>Sistem Durumu</h3><p class="value" id="pumpValue">Bekleniyor...</p></div>
+            </div>
+            <h2 class="section-title">Kontrol</h2>
+            <div class="controls">
+                <div class="auto-control-box">
+                    <span class="auto-text">Otomatik Sulama</span>
+                    <label class="switch"><input type="checkbox" id="autoSwitch" disabled><span class="slider"></span></label>
+                </div>
+                <button id="btnAction" class="btn-blue" type="button" disabled>Sulamayı Aç</button>
+            </div>
+            <p class="muted-note" style="margin-top:15px">Bağlantı için tarla bilgisayarında web sayfası açık ve internet bağlantısı etkin olmalıdır.</p>
+        </div>
+        <div class="footer">BY ELEGAN STUDIOS</div>
+    </div>
+
+    <div class="overlay" id="saveModal" role="dialog" aria-modal="true" aria-labelledby="saveModalTitle">
+        <div class="modal">
+            <h2 id="saveModalTitle">Bu tarlayı kaydetmek ister misin?</h2>
+            <p>Kaydedersen tarla sistemi yeniden başlatılsa bile aynı telefondan tekrar QR okutman gerekmez.</p>
+            <label for="newFarmName">Tarla adı</label>
+            <input id="newFarmName" maxlength="48" placeholder="Örn. Köy Tarlası" autocomplete="off">
+            <div class="modal-buttons">
+                <button class="btn-outline" id="btnDontSave" type="button">Şimdi Değil</button>
+                <button class="btn-primary" id="btnConfirmSave" type="button">Evet, Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    'use strict';
+    const STORAGE_KEY = 'akilliTarla.savedFarms.v1';
+    const LAST_FARM_KEY = 'akilliTarla.lastFarm.v1';
+    const $ = id => document.getElementById(id);
+    const connectScreen = $('connectScreen'), dashboard = $('dashboard');
+    const statusBar = $('statusBar'), activeFarmName = $('activeFarmName');
+    const savedFarmsList = $('savedFarmsList'), farmCount = $('farmCount'), savedHint = $('savedHint');
+    const newFarmSection = $('newFarmSection'), btnAddFarm = $('btnAddFarm');
+    const btnStartScan = $('btnStartScan'), btnCancelAdd = $('btnCancelAdd');
+    const video = $('video'), scanCanvas = $('scanCanvas'), scanStatus = $('scanStatus');
+    const btnPickQRImage = $('btnPickQRImage'), qrImageFile = $('qrImageFile');
+    const scanCtx = scanCanvas.getContext('2d', {willReadFrequently:true});
+    const btnManualConnect = $('btnManualConnect'), manualPeerId = $('manualPeerId');
+    const btnBackToFarms = $('btnBackToFarms'), btnRetry = $('btnRetry');
+    const btnSaveFarm = $('btnSaveFarm'), saveModal = $('saveModal');
+    const newFarmName = $('newFarmName'), btnConfirmSave = $('btnConfirmSave'), btnDontSave = $('btnDontSave');
+    const tempValue = $('tempValue'), rainValue = $('rainValue'), moistValue = $('moistValue');
+    const moistBar = $('moistBar'), pumpValue = $('pumpValue'), autoSwitch = $('autoSwitch'), btnAction = $('btnAction');
+    const mobileCameraStream = $('mobileCameraStream'), mobCamStatus = $('mobCamStatus');
+    const cameraPanArea = $('cameraPanArea'), mobileServoStatus = $('mobileServoStatus'), btnServoCenter = $('btnServoCenter');
+    const motionSwitch = $('motionSwitch'), motionInterval = $('motionInterval');
+    const motionStatus = $('motionStatus'), motionAlert = $('motionAlert');
+    const MOTION_MOBILE_KEY = 'akilliTarla.motionEnabled.mobile.v1.';
+    const MOTION_INTERVAL_MOBILE_KEY = 'akilliTarla.motionInterval.mobile.v1.';
+    const validMotionInterval = n => [3, 5, 10, 15, 30].includes(Number(n)) ? Number(n) : 5;
+    let remoteMotionStatus = null;
+    let gestureStart = null;
+    function sendServoMove(dx, dy) {
+        if (!connected || !conn || !conn.open) {
+            mobileServoStatus.textContent = 'Tarla bağlantısı aktif değil.';
+            return;
+        }
+        conn.send({type:'servo',payload:{dx,dy}});
+    }
+    cameraPanArea.addEventListener('pointerdown', event => {
+        if (event.isPrimary === false) return;
+        gestureStart = {id:event.pointerId, x:event.clientX, y:event.clientY};
+        try { cameraPanArea.setPointerCapture(event.pointerId); } catch(e) {}
+    });
+    cameraPanArea.addEventListener('pointerup', event => {
+        if (!gestureStart || gestureStart.id !== event.pointerId) return;
+        const dxPx = event.clientX - gestureStart.x;
+        const dyPx = event.clientY - gestureStart.y;
+        gestureStart = null;
+        if (Math.max(Math.abs(dxPx), Math.abs(dyPx)) < 26) return;
+        // Her 45 piksel yaklasik 10 derece. Tek kaydirmada en cok 40 derece.
+        const degrees = Math.min(40, Math.max(10, Math.round(Math.max(Math.abs(dxPx),Math.abs(dyPx)) / 45) * 10));
+        if (Math.abs(dxPx) >= Math.abs(dyPx)) sendServoMove(dxPx > 0 ? degrees : -degrees, 0);
+        else sendServoMove(0, dyPx > 0 ? degrees : -degrees);
+    });
+    cameraPanArea.addEventListener('pointercancel', () => { gestureStart = null; });
+    cameraPanArea.addEventListener('lostpointercapture', () => { gestureStart = null; });
+    btnServoCenter.addEventListener('click', () => {
+        if (connected && conn && conn.open) conn.send({type:'servo',payload:'center'});
+    });
+
+    let savedFarms = loadFarms();
+    let peer = null, conn = null, currentFarm = null, connected = false, currentPumpState = '0';
+    let mediaStream = null, scanTimer = null, scanning = false, scanLocked = false;
+    let scannerVersion = 0, barcodeReader = null, jsqrLoadPromise = null, qrScanCount = 0;
+    let retryTimer = null, attemptTimeout = null, session = 0, attemptNumber = 0, promptShown = false;
+    let suggestedFarmName = 'Tarlam';
+    let lastMobileFrameAt = 0, lastDataAt = 0, lastHeartbeatAt = 0;
+    let storageWarning = false;
+
+    function safeGet(key) { try { return localStorage.getItem(key); } catch(e) { storageWarning = true; return null; } }
+    function updateMotionStatus() {
+        if (!motionSwitch.checked) { motionStatus.textContent = 'Kapalı · Bu telefona hareket fotoğrafı ve bildirimi gelmez.'; return; }
+        if (!connected) { motionStatus.textContent = 'Etkinleştirildi · PC bağlantısı bekleniyor.'; return; }
+        if (!remoteMotionStatus || !remoteMotionStatus.cameraConnected) {
+            motionStatus.textContent = 'Etkinleştirildi · PC üzerinde Deneyap bağlantısı bekleniyor.'; return;
+        }
+        motionStatus.textContent = remoteMotionStatus.sensorReady
+            ? 'Hareket izleniyor · Çekimler arasında en az ' +
+                (remoteMotionStatus.interval || validMotionInterval(motionInterval.value)) + ' saniye var.'
+            : 'PIR sensörü hazırlanıyor · Birazdan hareket izleme başlayacak.';
+    }
+    function sendMotionPreference() {
+        if (connected && conn && conn.open)
+            conn.send({type:'motion_pref', enabled:motionSwitch.checked, interval:validMotionInterval(motionInterval.value)});
+        updateMotionStatus();
+    }
+    // Hareket uyarısı: bildirim + ses + titreşim + sekme başlığı. Sunucu/servis çalışanı yok, düz HTML.
+    let alertAudio = null, flashTimer = null, permAsked = false;
+    const BASE_TITLE = document.title;
+    function askNotifyPermission() {
+        permAsked = true;
+        if ('Notification' in window && Notification.permission === 'default') {
+            try { Notification.requestPermission(); } catch (e) {}
+        }
+    }
+    // Ses ve izin için tarayıcı bir tıklama/dokunma ister; ilk dokunuşta hazırla.
+    ['pointerdown', 'keydown'].forEach(ev => window.addEventListener(ev, () => {
+        try {
+            if (!alertAudio) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) alertAudio = new AC(); }
+            if (alertAudio && alertAudio.state === 'suspended') alertAudio.resume();
+        } catch (e) {}
+        if (motionSwitch.checked && !permAsked) askNotifyPermission();
+    }, {passive: true}));
+    function beep() {
+        try {
+            if (!alertAudio || alertAudio.state !== 'running') return;
+            const t = alertAudio.currentTime;
+            [0, .25].forEach(d => {
+                const o = alertAudio.createOscillator(), g = alertAudio.createGain();
+                o.frequency.value = 880;
+                g.gain.setValueAtTime(.0001, t + d);
+                g.gain.exponentialRampToValueAtTime(.25, t + d + .02);
+                g.gain.exponentialRampToValueAtTime(.0001, t + d + .2);
+                o.connect(g); g.connect(alertAudio.destination);
+                o.start(t + d); o.stop(t + d + .22);
+            });
+        } catch (e) {}
+    }
+    function notifyMotion(text) {
+        if ('Notification' in window && Notification.permission === 'granted') {
+            // renotify: aynı tag ile gelen sonraki bildirimler de uyarsın
+            try { new Notification('Akıllı Tarla · Hareket algılandı', {body: text, tag: 'tarla-motion', renotify: true}); } catch (e) {}
+        }
+        beep();
+        try { if (navigator.vibrate) navigator.vibrate([200, 100, 200]); } catch (e) {}
+        if (document.hidden) {
+            clearInterval(flashTimer);
+            let on = false;
+            flashTimer = setInterval(() => { document.title = (on = !on) ? '🔔 Hareket algılandı' : BASE_TITLE; }, 900);
+        }
+    }
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) { clearInterval(flashTimer); document.title = BASE_TITLE; }
+    });
+
+    function enableBrowserMotionNotification() { askNotifyPermission(); }
+    function showMotionPhotoAlert(code) {
+        const text = 'Hareket algılandı · Fotoğraf hazır: ' + code;
+        motionAlert.textContent = text; motionAlert.hidden = false;
+        notifyMotion(text);
+    }
+    motionSwitch.addEventListener('change', () => {
+        if (currentFarm) safeSet(MOTION_MOBILE_KEY + currentFarm.id, motionSwitch.checked ? '1' : '0');
+        if (motionSwitch.checked) enableBrowserMotionNotification();
+        sendMotionPreference();
+    });
+    motionInterval.addEventListener('change', () => {
+        motionInterval.value = String(validMotionInterval(motionInterval.value));
+        if (currentFarm) safeSet(MOTION_INTERVAL_MOBILE_KEY + currentFarm.id, motionInterval.value);
+        sendMotionPreference();
+    });
+    function safeSet(key, value) { try { localStorage.setItem(key, value); return true; } catch(e) { storageWarning = true; showStorageWarning(); return false; } }
+    function showStorageWarning() {
+        if (storageWarning) savedHint.textContent = 'Tarayıcı depolaması kapalı. Kalıcı tarla kaydı için normal sekmede ve aynı internet adresinde aç.';
+    }
+    function loadFarms() {
+        try {
+            const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            if (!Array.isArray(data)) return [];
+            return data.filter(f => f && typeof f.id === 'string' && /^[\w-]{4,128}$/.test(f.id) && typeof f.name === 'string')
+                .slice(0, 60).map(f => ({id:f.id, name:f.name.slice(0,48) || 'Tarlam'}));
+        } catch(e) { return []; }
+    }
+    function persistFarms() { return safeSet(STORAGE_KEY, JSON.stringify(savedFarms)); }
+    function getFarm(id) { return savedFarms.find(f => f.id === id); }
+    function setConnectStatus(text, mode = 'offline') {
+        statusBar.textContent = text;
+        statusBar.className = 'status-bar ' + mode;
+        autoSwitch.disabled = mode !== 'connected';
+        btnAction.disabled = mode !== 'connected';
+    }
+    function makeButton(text, css, click, label) {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = css; b.textContent = text;
+        if(label) b.setAttribute('aria-label', label);
+        b.addEventListener('click', click); return b;
+    }
+    function renderSavedFarms() {
+        savedFarmsList.replaceChildren();
+        farmCount.textContent = savedFarms.length ? savedFarms.length + ' kayıtlı tarla' : '';
+        if (!savedFarms.length) {
+            const p = document.createElement('p'); p.className = 'muted-note';
+            p.textContent = 'Henüz kayıtlı tarla yok. İlk kez bağlanmak için Yeni Tarla Ekle seç.';
+            savedFarmsList.appendChild(p);
+        }
+        for (const farm of savedFarms) {
+            const item = document.createElement('div'); item.className = 'farm-item';
+            const name = document.createElement('div'); name.className = 'farm-name'; name.textContent = farm.name;
+            const desc = document.createElement('p'); desc.className = 'farm-description'; desc.textContent = 'Kayıtlı tarla • ' + farm.id;
+            const actions = document.createElement('div'); actions.className = 'farm-actions';
+            actions.append(
+                makeButton('Bağlan', 'open-farm', () => connectToPC(farm.id, farm.name)),
+                makeButton('Adlandır', 'secondary-action btn-outline', () => renameFarm(farm.id), farm.name + ' adını değiştir'),
+                makeButton('Sil', 'secondary-action btn-outline', () => deleteFarm(farm.id), farm.name + ' kaydını sil')
+            );
+            item.append(name, desc, actions); savedFarmsList.appendChild(item);
+        }
+        showStorageWarning();
+    }
+    function renameFarm(id) {
+        const farm = getFarm(id); if (!farm) return;
+        const newName = prompt('Tarla adını değiştir:', farm.name);
+        if (newName === null || !newName.trim()) return;
+        const oldName = farm.name; farm.name = newName.trim().slice(0, 48);
+        if (!persistFarms()) { farm.name = oldName; return; }
+        if (currentFarm && currentFarm.id === id) { currentFarm.name = farm.name; activeFarmName.textContent = farm.name; }
+        renderSavedFarms();
+    }
+    function deleteFarm(id) {
+        const farm = getFarm(id); if (!farm) return;
+        if (!confirm('"' + farm.name + '" kaydını bu telefondan silmek istiyor musun?')) return;
+        const previous = savedFarms;
+        savedFarms = savedFarms.filter(f => f.id !== id);
+        if (!persistFarms()) { savedFarms = previous; return; }
+        renderSavedFarms();
+    }
+    function showAddFarm() {
+        stopCamera(); newFarmSection.style.display = 'block'; btnAddFarm.style.display = 'none';
+        btnStartScan.style.display = 'block'; scanStatus.textContent = 'Kamerayı açarak QR kodu okut.';
+        newFarmSection.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }
+    function hideAddFarm() {
+        stopCamera(); newFarmSection.style.display = 'none'; btnAddFarm.style.display = 'block';
+    }
+    btnAddFarm.addEventListener('click', () => { showAddFarm(); startScanner(); });
+    btnCancelAdd.addEventListener('click', hideAddFarm);
+    btnStartScan.addEventListener('click', startScanner);
+    btnManualConnect.addEventListener('click', () => {
+        const id = parsePeerId(manualPeerId.value);
+        if (!id) { alert('Geçerli tarla Peer ID gir.'); return; }
+        connectToPC(id, 'Tarlam');
+    });
+
+    function setScanMessage(message, mode = '') {
+        scanStatus.textContent = message;
+        scanStatus.classList.toggle('scanner-status-error', mode === 'error');
+        scanStatus.classList.toggle('scanner-status-ok', mode === 'ok');
+    }
+    function stopCamera() {
+        scannerVersion++;
+        scanning = false;
+        if (scanTimer) { clearTimeout(scanTimer); scanTimer = null; }
+        if (mediaStream) { mediaStream.getTracks().forEach(track => track.stop()); mediaStream = null; }
+        try { video.pause(); video.srcObject = null; } catch(e) {}
+        btnStartScan.disabled = false;
+    }
+    function createBarcodeReader() {
+        if (barcodeReader) return barcodeReader;
+        if (typeof BarcodeDetector === 'undefined') return null;
+        try { barcodeReader = new BarcodeDetector({ formats: ['qr_code'] }); }
+        catch(e) { barcodeReader = null; }
+        return barcodeReader;
+    }
+    async function ensureJsQR() {
+        if (typeof jsQR === 'function') return true;
+        if (!jsqrLoadPromise) {
+            jsqrLoadPromise = (async () => {
+                const sources = [
+                    'https://unpkg.com/jsqr@1.4.0/dist/jsQR.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js',
+                    'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js'
+                ];
+                for (const src of sources) {
+                    if (typeof jsQR === 'function') return true;
+                    try {
+                        await new Promise((resolve, reject) => {
+                            const script = document.createElement('script');
+                            script.src = src; script.async = true;
+                            const timeout = setTimeout(() => { script.remove(); reject(new Error('Zaman aşımı')); }, 4500);
+                            script.onload = () => { clearTimeout(timeout); resolve(); };
+                            script.onerror = () => { clearTimeout(timeout); script.remove(); reject(new Error('Erişilemedi')); };
+                            document.head.appendChild(script);
+                        });
+                        if (typeof jsQR === 'function') return true;
+                    } catch(e) { console.warn('[QR kütüphanesi]', src, e.message); }
+                }
+                return typeof jsQR === 'function';
+            })().finally(() => { jsqrLoadPromise = null; });
+        }
+        return jsqrLoadPromise;
+    }
+    async function prepareScanner() {
+        const nativeReader = createBarcodeReader();
+        if (nativeReader) return true;
+        const ready = await ensureJsQR();
+        if (!ready) setScanMessage('QR okuyucu indirilemedi. Normal telefon kamerasını veya tarla ID bağlantısını kullan.', 'error');
+        return ready;
+    }
+    function parsePeerId(value) {
+        let text = String(value || '').trim();
+        try {
+            if (text.startsWith('https://') || text.startsWith('http://')) {
+                const parsed = new URL(text); text = parsed.searchParams.get('peer') || '';
+            }
+        } catch(e) { return ''; }
+        return /^[A-Za-z0-9_-]{4,128}$/.test(text) ? text : '';
+    }
+    function acceptQRCode(value) {
+        const text = String(value || '').trim();
+        let id = parsePeerId(text), name = 'Tarlam';
+        if (text.startsWith('https://') || text.startsWith('http://')) {
+            try { const url = new URL(text); name = String(url.searchParams.get('name') || 'Tarlam').slice(0,48); }
+            catch(e) {}
+        }
+        if (!id) { setScanMessage('QR okundu ama tarla bağlantısı bulunamadı.', 'error'); return false; }
+        scanLocked = true;
+        setScanMessage('QR bulundu! Tarlaya bağlanılıyor...', 'ok');
+        stopCamera(); connectToPC(id, name);
+        return true;
+    }
+    function drawAndDecodeJsQR(source, width, height) {
+        if (typeof jsQR !== 'function') return '';
+        const target = 720;
+        const ratio = Math.min(1, target / Math.max(width, height));
+        const w = Math.max(1, Math.round(width * ratio)), h = Math.max(1, Math.round(height * ratio));
+        scanCanvas.width = w; scanCanvas.height = h;
+        scanCtx.drawImage(source, 0, 0, width, height, 0, 0, w, h);
+        const imageData = scanCtx.getImageData(0, 0, w, h);
+        const result = jsQR(imageData.data, w, h, {inversionAttempts:'attemptBoth'});
+        return result?.data || '';
+    }
+    async function startScanner() {
+        stopCamera(); scanLocked = false;
+        const token = scannerVersion;
+        btnStartScan.disabled = true;
+        if (!window.isSecureContext) {
+            setScanMessage('QR taraması HTTPS bağlantısı gerektirir. Netlify HTTPS adresini kullan.', 'error');
+            btnStartScan.disabled = false; return;
+        }
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            setScanMessage('Bu tarayıcı kameraya erişemiyor. Safari/Chrome ile aç veya telefon kamerasını kullan.', 'error');
+            btnStartScan.disabled = false; return;
+        }
+        setScanMessage('QR tarayıcı hazırlanıyor...');
+        if (!await prepareScanner()) { btnStartScan.disabled = false; return; }
+        if (token !== scannerVersion) return;
+        try {
+            let stream;
+            try { stream = await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}}); }
+            catch(firstError) {
+                if (firstError.name === 'NotAllowedError' || firstError.name === 'SecurityError') throw firstError;
+                stream = await navigator.mediaDevices.getUserMedia({audio:false, video:true});
+            }
+            if (token !== scannerVersion || newFarmSection.style.display === 'none') {
+                stream.getTracks().forEach(t=>t.stop()); return;
+            }
+            mediaStream = stream;
+            video.setAttribute('playsinline',''); video.muted = true; video.srcObject = stream;
+            await video.play();
+            if (token !== scannerVersion) return;
+            scanning = true; btnStartScan.disabled = false; qrScanCount = 0;
+            setScanMessage('Kamera açık • QR kodu çerçeveye getir', 'ok');
+            processFrame(token);
+        } catch(error) {
+            if (token !== scannerVersion) return;
+            console.warn('[QR kamera]', error);
+            const message = (error.name === 'NotAllowedError' || error.name === 'SecurityError')
+                ? 'Kamera izni reddedildi. Tarayıcı ayarlarından izin ver ve tekrar dene.'
+                : error.name === 'NotFoundError' ? 'Bu cihazda kamera bulunamadı.'
+                : 'Kamera açılamadı: ' + (error.message || error.name) + '. Telefonun normal kamerasını deneyebilirsin.';
+            setScanMessage(message, 'error'); stopCamera();
+        }
+    }
+    async function processFrame(token) {
+        if (!scanning || scanLocked || token !== scannerVersion) return;
+        try {
+            if (video.readyState >= 2 && video.videoWidth > 0 && video.videoHeight > 0) {
+                let value = '';
+                const detector = createBarcodeReader();
+                if (detector) {
+                    try { const results = await detector.detect(video); value = results?.[0]?.rawValue || ''; }
+                    catch(e) { barcodeReader = null; await ensureJsQR(); }
+                }
+                if (!value) value = drawAndDecodeJsQR(video, video.videoWidth, video.videoHeight);
+                if (value && acceptQRCode(value)) return;
+                qrScanCount++;
+                if (qrScanCount % 12 === 0) setScanMessage('QR aranıyor... Kodu çerçevenin ortasında sabit tut.');
+            }
+        } catch(error) { console.warn('[QR tarama]', error); }
+        if (!scanning || scanLocked || token !== scannerVersion) return;
+        scanTimer = setTimeout(() => processFrame(token), 180);
+    }
+    btnPickQRImage.addEventListener('click', () => qrImageFile.click());
+    qrImageFile.addEventListener('change', async () => {
+        const file = qrImageFile.files?.[0]; if (!file) return;
+        setScanMessage('Seçilen görselde QR aranıyor...');
+        let bitmap = null, image = null, imageURL = null;
+        try {
+            if (typeof createImageBitmap === 'function') {
+                bitmap = await createImageBitmap(file);
+            } else {
+                imageURL = URL.createObjectURL(file);
+                image = new Image(); image.src = imageURL;
+                await image.decode();
+            }
+            const source = bitmap || image;
+            const w = bitmap ? bitmap.width : image.naturalWidth;
+            const h = bitmap ? bitmap.height : image.naturalHeight;
+            let raw = '';
+            const detector = createBarcodeReader();
+            if (detector) {
+                try { raw = (await detector.detect(source))?.[0]?.rawValue || ''; }
+                catch(e) { barcodeReader = null; }
+            }
+            if (!raw && await ensureJsQR()) raw = drawAndDecodeJsQR(source, w, h);
+            if (!raw) setScanMessage('Fotoğrafta QR bulunamadı. Kodu net ve tam görünecek şekilde çek.', 'error');
+            else acceptQRCode(raw);
+        } catch(error) { setScanMessage('Görsel açılamadı: ' + error.message, 'error'); }
+        finally {
+            if (bitmap) bitmap.close(); if (imageURL) URL.revokeObjectURL(imageURL);
+            qrImageFile.value = '';
+        }
+    });
+
+    function clearConnection() {
+        clearTimeout(retryTimer); clearTimeout(attemptTimeout);
+        retryTimer = null; attemptTimeout = null; connected = false;
+        if (conn) { try { conn.close(); } catch(e) {} conn = null; }
+        if (peer) { try { peer.destroy(); } catch(e) {} peer = null; }
+        autoSwitch.disabled = true; btnAction.disabled = true; btnServoCenter.disabled = true;
+        updateMotionStatus();
+    }
+    function resetDashboard() {
+        tempValue.textContent = '-- °C'; moistValue.textContent = '-- %'; moistBar.style.width = '0%';
+        rainValue.textContent = '--'; pumpValue.textContent = 'Veri bekleniyor...';
+        currentPumpState = '0'; autoSwitch.checked = false;
+        mobileCameraStream.style.display = 'none'; mobileCameraStream.removeAttribute('src');
+        mobCamStatus.style.display = 'block'; mobCamStatus.textContent = 'Kamera Görüntüsü Bekleniyor...';
+        mobileServoStatus.textContent = 'Servo kontrolü için tarla bağlantısı bekleniyor.';
+    }
+    function connectToPC(rawId, name = 'Tarlam') {
+        const id = parsePeerId(rawId);
+        if (!id) { alert('Geçersiz tarla kimliği.'); return; }
+        session++;
+        clearConnection(); stopCamera(); hideSaveModal(); hideAddFarm();
+        const farm = getFarm(id);
+        lastMobileFrameAt = 0; lastDataAt = 0; lastHeartbeatAt = 0;
+        currentFarm = {id, name:farm ? farm.name : String(name || 'Tarlam').slice(0,48)};
+        motionSwitch.checked = safeGet(MOTION_MOBILE_KEY + id) === '1';
+        motionInterval.value = String(validMotionInterval(safeGet(MOTION_INTERVAL_MOBILE_KEY + id) || '5'));
+        motionAlert.hidden = true;
+        remoteMotionStatus = null;
+        updateMotionStatus();
+        suggestedFarmName = currentFarm.name;
+        promptShown = false;
+        connectScreen.style.display = 'none'; dashboard.style.display = 'block';
+        activeFarmName.textContent = currentFarm.name || 'Tarlam';
+        btnSaveFarm.style.display = farm ? 'none' : 'block';
+        resetDashboard(); setConnectStatus('Tarla bağlantısı aranıyor...');
+        attemptConnect(session);
+    }
+    function attemptConnect(mySession) {
+        if (mySession !== session || !currentFarm) return;
+        clearConnection();
+        const myAttempt = ++attemptNumber;
+        const valid = () => mySession === session && myAttempt === attemptNumber;
+        setConnectStatus('Tarla çevrimiçiyse bağlantı kuruluyor...');
+        try { peer = new Peer(); }
+        catch(e) { scheduleRetry('PeerJS başlatılamadı.', valid, mySession); return; }
+        peer.on('open', () => {
+            if (!valid()) return;
+            try { conn = peer.connect(currentFarm.id, {reliable:true}); }
+            catch(e) { scheduleRetry('Tarla bağlantısı açılamadı.', valid, mySession); return; }
+            conn.on('open', () => {
+                if (!valid()) return;
+                clearTimeout(attemptTimeout); connected = true;
+                setConnectStatus('Bağlantı Aktif', 'connected');
+                lastHeartbeatAt = Date.now();
+                sendMotionPreference();
+                btnServoCenter.disabled = false;
+                mobileServoStatus.textContent = 'Kamera görüntüsünü kaydırarak hareket ettirebilirsin.';
+                if (!getFarm(currentFarm.id) && !promptShown) {
+                    promptShown = true; showSaveModal();
+                }
+                try { safeSet(LAST_FARM_KEY, currentFarm.id); } catch(e) {}
+            });
+            conn.on('data', msg => {
+                if (!valid() || !msg || typeof msg !== 'object') return;
+                if (msg.type === 'ping') {
+                    lastHeartbeatAt = Date.now();
+                    try { if (conn && conn.open) conn.send({type:'pong'}); } catch(e) {}
+                }
+                if (msg.type === 'data' && typeof msg.payload === 'string') {
+                    lastDataAt = Date.now(); processSensorData(msg.payload);
+                }
+                if (msg.type === 'cam' && typeof msg.payload === 'string') {
+                    // Cok hizli karelerde mobil tarayicida gorsel cozumleme kuyruğunu sisirme.
+                    const now = Date.now();
+                    if (now - lastMobileFrameAt > 900 && msg.payload.length < 100000) {
+                        lastMobileFrameAt = now;
+                        mobileCameraStream.src = 'data:image/jpeg;base64,' + msg.payload;
+                        mobileCameraStream.style.display = 'block'; mobCamStatus.style.display = 'none';
+                    }
+                }
+                if (msg.type === 'motion_status' && msg.payload) {
+                    remoteMotionStatus = msg.payload;
+                    updateMotionStatus();
+                }
+                if (msg.type === 'motion_photo' && msg.payload && motionSwitch.checked &&
+                    typeof msg.payload.image === 'string' && msg.payload.image.length < 120000) {
+                    if (window.receiveMotionPhoto) window.receiveMotionPhoto(msg.payload);
+                }
+                if (msg.type === 'servo_pos' && msg.payload) {
+                    const pan = Number(msg.payload.pan), tilt = Number(msg.payload.tilt);
+                    if (Number.isInteger(pan) && Number.isInteger(tilt))
+                        mobileServoStatus.textContent = 'Kamera acisi · Sag-sol ' + pan + '° / Yukari-asagi ' + tilt + '°';
+                }
+                if (msg.type === 'servo_error') mobileServoStatus.textContent = String(msg.payload).slice(0,170);
+            });
+            conn.on('close', () => { if (valid()) scheduleRetry('Tarla bağlantısı kesildi.', valid, mySession); });
+            conn.on('error', () => { if (valid()) scheduleRetry('Tarla ile haberleşme hatası.', valid, mySession); });
+        });
+        peer.on('error', error => {
+            if (!valid()) return;
+            console.warn('[Mobil PeerJS]', error);
+            scheduleRetry(error.type === 'peer-unavailable'
+                ? 'Tarla şu anda çevrimdışı. Bilgisayarda tarla sayfasını aç.'
+                : 'Bağlantı sorunu (' + (error.type || 'ağ') + ').', valid, mySession);
+        });
+        peer.on('disconnected', () => {
+            if (valid() && !connected) scheduleRetry('Sinyal sunucusuna erişilemiyor.', valid, mySession);
+        });
+        attemptTimeout = setTimeout(() => {
+            if (valid() && !connected) scheduleRetry('Tarla yanıt vermiyor. Otomatik tekrar denenecek.', valid, mySession);
+        }, 11500);
+    }
+    function scheduleRetry(message, valid, mySession) {
+        if (!valid()) return;
+        // Once mevcut denemeyi gecersizlestir: close/error geri cagirimlari
+        // tek kopmada birden fazla yeniden baglanma dongusu uretmesin.
+        attemptNumber++;
+        clearConnection();
+        setConnectStatus(message + ' 7 saniye sonra tekrar denenecek.');
+        retryTimer = setTimeout(() => { if (mySession === session) attemptConnect(mySession); }, 7000);
+    }
+    function returnToFarms() {
+        session++; attemptNumber++;
+        clearConnection(); stopCamera(); hideSaveModal();
+        dashboard.style.display = 'none'; connectScreen.style.display = 'block';
+        currentFarm = null; remoteMotionStatus = null;
+        motionSwitch.checked = false; motionAlert.hidden = true;
+        updateMotionStatus();
+        hideAddFarm(); renderSavedFarms();
+    }
+    btnBackToFarms.addEventListener('click', returnToFarms);
+    btnRetry.addEventListener('click', () => {
+        if (!currentFarm) return;
+        attemptConnect(session);
+    });
+    function showSaveModal() {
+        if (!currentFarm || getFarm(currentFarm.id)) return;
+        newFarmName.value = suggestedFarmName || 'Tarlam';
+        saveModal.style.display = 'flex'; newFarmName.focus(); newFarmName.select();
+    }
+    function hideSaveModal() { saveModal.style.display = 'none'; }
+    btnSaveFarm.addEventListener('click', showSaveModal);
+    btnDontSave.addEventListener('click', hideSaveModal);
+    btnConfirmSave.addEventListener('click', () => {
+        if (!currentFarm) return;
+        const name = newFarmName.value.trim().slice(0,48) || 'Tarlam';
+        const oldFarms = savedFarms.slice();
+        const existing = getFarm(currentFarm.id);
+        if (existing) existing.name = name;
+        else savedFarms.push({id:currentFarm.id, name});
+        if (!persistFarms()) {
+            savedFarms = oldFarms;
+            alert('Kayıt yapılamadı. Gizli sekme yerine normal tarayıcıda aç ve depolama iznini kontrol et.');
+            return;
+        }
+        currentFarm.name = name; activeFarmName.textContent = name;
+        btnSaveFarm.style.display = 'none'; hideSaveModal(); renderSavedFarms();
+    });
+    newFarmName.addEventListener('keydown', e => { if (e.key === 'Enter') btnConfirmSave.click(); });
+
+    function processSensorData(line) {
+        const data = line.split(','); if (data.length !== 5) return;
+        currentPumpState = data[3];
+        tempValue.textContent = data[0] !== 'nan' ? data[0] + ' °C' : '-- °C';
+        const moisture = Math.max(0, Math.min(100, Number.parseInt(data[1], 10) || 0));
+        moistValue.textContent = moisture + ' %'; moistBar.style.width = moisture + '%';
+        moistBar.style.backgroundColor = moisture < 20 ? 'var(--red)' : moisture < 40 ? 'var(--yellow)' : 'var(--blue)';
+        rainValue.textContent = data[2] === '1' ? 'Yağmurlu' : 'Açık';
+        rainValue.className = data[2] === '1' ? 'value text-blue' : 'value';
+        autoSwitch.checked = data[4] === '2';
+        btnAction.textContent = currentPumpState === '1' ? 'Sulamayı Kapat' : 'Sulamayı Aç';
+        btnAction.className = currentPumpState === '1' ? 'btn-red' : 'btn-blue';
+        const mode = data[4] === '1' ? '(Manuel)' : data[4] === '0' ? '(Kapalı)' : '(Otomatik)';
+        pumpValue.textContent = (currentPumpState === '1' ? 'Aktif ' : 'Pasif ') + mode;
+        pumpValue.className = currentPumpState === '1' ? 'value text-green' : 'value text-muted';
+    }
+    autoSwitch.addEventListener('change', e => {
+        if (connected && conn && conn.open) conn.send({type:'cmd', payload:e.target.checked ? '2' : '0'});
+    });
+    btnAction.addEventListener('click', () => {
+        if (connected && conn && conn.open) conn.send({type:'cmd', payload:currentPumpState === '1' ? '0' : '1'});
+    });
+    window.addEventListener('beforeunload', () => { stopCamera(); clearConnection(); });
+    // Arka planda kalan sekmelerde WebRTC bağlantisi gorunurde acik kalabilir;
+    // uygulama geri geldiginde olumsuzlugun farkina vararak otomatik baglanir.
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && currentFarm && !connected && !retryTimer) attemptConnect(session);
+    });
+    setInterval(() => {
+        if (!currentFarm || !connected) return;
+        if (!conn || !conn.open) {
+            attemptConnect(session);
+            return;
+        }
+        // Ag gercekten koptuysa heartbeat akisi 90 sn kesilir.
+        // Kamera donsa bile sensor/heartbeat akisi geldigi surece baglantiyi kesme.
+        if (!document.hidden && lastHeartbeatAt && Date.now() - lastHeartbeatAt > 90000 &&
+            lastDataAt && Date.now() - lastDataAt > 90000) attemptConnect(session);
+    }, 15000);
+
+    // QR linkiyle gelen tarla ilk kez bağlandıktan sonra kaydetme sorusu gösterilir.
+    // Kayıtlı tek tarla varsa telefondaki sayfa yeniden açıldığında doğrudan bağlanılır.
+    renderSavedFarms();
+    const params = new URLSearchParams(location.search);
+    const peerFromUrl = parsePeerId(params.get('peer') || '');
+    const nameFromUrl = String(params.get('name') || 'Tarlam').slice(0, 48);
+    if (peerFromUrl) {
+        connectToPC(peerFromUrl, nameFromUrl);
+    } else if (savedFarms.length === 1) {
+        connectToPC(savedFarms[0].id, savedFarms[0].name);
+    }
+    </script>
+<script>
+(function (CFG) {
+    const $ = id => document.getElementById(id);
+    const img = $(CFG.img), box = img.parentElement;
+    const bPhoto = $('btnPhoto'), bRec = $('btnRec'), bRecText = $('btnRecText'), shots = $('shots'), note = $('capNote');
+    const p2 = n => String(n).padStart(2, '0');
+    const canRec = typeof MediaRecorder !== 'undefined' && !!HTMLCanvasElement.prototype.captureStream;
+    const badge = document.createElement('div'); badge.className = 'rec-badge'; badge.hidden = true; box.appendChild(badge);
+    let rec = null, drawTimer = 0, tickTimer = 0, chunks = [], t0 = 0, code = '', cvR = null;
+    if (!canRec) bRec.title = 'Bu tarayıcı video kaydını desteklemiyor';
+
+    function nextCode() {
+        const d = new Date(), ymd = String(d.getFullYear()).slice(2) + p2(d.getMonth() + 1) + p2(d.getDate());
+        const key = 'tarla_kayit_sayac_' + CFG.dev + '_' + ymd;
+        let n;
+        try { n = (parseInt(localStorage.getItem(key) || '0', 10) || 0) + 1; localStorage.setItem(key, String(n)); }
+        catch (e) { n = Math.floor(Math.random() * 9000) + 1000; }
+        return 'KYT-' + ymd + '-' + CFG.dev + '-' + String(n).padStart(4, '0');
+    }
+    const frameReady = () => img.complete && img.naturalWidth > 0 && getComputedStyle(img).display !== 'none';
+    function newCanvas() {
+        const k = Math.max(1, Math.round(640 / img.naturalWidth)), c = document.createElement('canvas');
+        c.width = img.naturalWidth * k; c.height = img.naturalHeight * k;
+        return c;
+    }
+    function stamp(x, W, H, cd) {
+        const d = new Date(), pad = Math.round(H * .03), f1 = Math.max(14, Math.round(H * .042)), f2 = Math.round(f1 * .78);
+        const ui = getComputedStyle(document.body).fontFamily;
+        const t1 = p2(d.getDate()) + '.' + p2(d.getMonth() + 1) + '.' + d.getFullYear() + '  ' + p2(d.getHours()) + ':' + p2(d.getMinutes()) + ':' + p2(d.getSeconds());
+        const t2 = 'Kayıt kodu  ' + cd;
+        x.font = '600 ' + f1 + 'px ' + ui; const w1 = x.measureText(t1).width;
+        x.font = '500 ' + f2 + 'px ' + ui; const w2 = x.measureText(t2).width;
+        const ip = Math.round(pad * .75), bw = Math.max(w1, w2) + ip * 2, bh = f1 + f2 + ip * 2 + Math.round(f1 * .25);
+        const bx = pad, by = H - pad - bh;
+        x.fillStyle = 'rgba(10,12,16,.68)'; x.beginPath();
+        if (x.roundRect) x.roundRect(bx, by, bw, bh, Math.round(f1 * .45)); else x.rect(bx, by, bw, bh);
+        x.fill();
+        x.textBaseline = 'top'; x.textAlign = 'left';
+        x.fillStyle = '#f1f3f6'; x.font = '600 ' + f1 + 'px ' + ui; x.fillText(t1, bx + ip, by + ip);
+        x.fillStyle = '#8fc7aa'; x.font = '500 ' + f2 + 'px ' + ui; x.fillText(t2, bx + ip, by + ip + f1 + Math.round(f1 * .25));
+    }
+    function paint(c, cd) {
+        const x = c.getContext('2d');
+        if (frameReady()) x.drawImage(img, 0, 0, c.width, c.height);
+        stamp(x, c.width, c.height, cd);
+    }
+    function thumbOf(c) {
+        const t = document.createElement('canvas'); t.width = 208; t.height = Math.round(208 * c.height / c.width);
+        t.getContext('2d').drawImage(c, 0, 0, t.width, t.height);
+        return t.toDataURL('image/jpeg', .7);
+    }
+    function download(url, name) {
+        const a = document.createElement('a'); a.href = url; a.download = name;
+        document.body.appendChild(a); a.click(); a.remove();
+    }
+    async function saveItem(it) {
+        if (CFG.dev === 'MB' && navigator.canShare) {
+            try {
+                const f = new File([it.blob], it.name, {type: it.blob.type});
+                if (navigator.canShare({files: [f]})) { await navigator.share({files: [f], title: it.code}); return; }
+            } catch (e) { if (e && e.name === 'AbortError') return; }
+        }
+        download(it.url, it.name);
+    }
+    function addShot(it) {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'shot';
+        b.title = it.name + ' · izlemek için tıkla';
+        b.innerHTML = '<img alt=""><span class="shot-kind"></span><span class="shot-meta"></span>';
+        b.querySelector('img').src = it.thumb;
+        b.querySelector('.shot-kind').textContent = it.kind;
+        b.querySelector('.shot-meta').textContent = it.code;
+        b._it = it; b.addEventListener('click', () => openViewer(it)); if (it.kind === 'VİDEO') b.classList.add('is-video');
+        shots.prepend(b); shots.hidden = false;
+        while (shots.children.length > 12) {
+            const old = shots.lastElementChild; shots.removeChild(old);
+            if (old._url) URL.revokeObjectURL(old._url);
+        }
+        b._url = it.url;
+    }
+    function finish(blob, ext, cd, kind, c) {
+        const it = {blob, url: URL.createObjectURL(blob), name: 'tarla_' + cd + '.' + ext, kind, code: cd, thumb: thumbOf(c)};
+        addShot(it);
+        if (CFG.dev === 'PC') download(it.url, it.name);
+        note.textContent = (CFG.dev === 'PC' ? 'Kaydedildi · izlemek için küçük resme tıkla · ' : 'Hazır · izlemek için küçük resme dokun · ') + it.name;
+    }
+    function photo() {
+        if (!frameReady()) return;
+        const c = newCanvas(), cd = nextCode(); paint(c, cd);
+        c.toBlob(b => { if (b) finish(b, 'jpg', cd, 'FOTO', c); }, 'image/jpeg', .92);
+    }
+    if (CFG.dev === 'MB') window.receiveMotionPhoto = data => {
+        try {
+            // PC'den gonderilen ozel HAREKET karesi; kayit kodu PC ile ayni kalir.
+            if (!/^[A-Za-z0-9+/]+={0,2}$/.test(data.image) || data.image.length > 120000) return;
+            const bin = atob(data.image);
+            const bytes = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+            const blob = new Blob([bytes], {type:'image/jpeg'});
+            const code = String(data.code || 'KYT-HAREKET').slice(0,60);
+            const url = URL.createObjectURL(blob);
+            const picture = new Image();
+            picture.onload = () => {
+                const c = document.createElement('canvas');
+                c.width = picture.naturalWidth; c.height = picture.naturalHeight;
+                c.getContext('2d').drawImage(picture, 0, 0);
+                const it = {blob,url,name:'tarla_' + code + '.jpg',kind:'HAREKET',code,thumb:thumbOf(c)};
+                addShot(it);
+                note.textContent = 'Hareket fotoğrafı hazır · Kaydet / Paylaş ile telefona kaydet · ' + code;
+                showMotionPhotoAlert(code);
+            };
+            picture.onerror = () => URL.revokeObjectURL(url);
+            picture.src = url;
+        } catch(err) { console.warn('[PIR] hareket fotografi', err); }
+    };
+    function tick() {
+        const s = Math.floor((Date.now() - t0) / 1000), t = p2(Math.floor(s / 60)) + ':' + p2(s % 60);
+        bRecText.textContent = 'Kaydı durdur · ' + t;
+        badge.textContent = 'REC ' + t + ' · ' + code;
+        if (s > 1800) stopRec();
+    }
+    function startRec() {
+        if (rec || !canRec || !frameReady()) return;
+        cvR = newCanvas(); code = nextCode(); paint(cvR, code);
+        const mime = ['video/mp4;codecs=avc1.42E01E', 'video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'].find(m => MediaRecorder.isTypeSupported(m));
+        try {
+            rec = new MediaRecorder(cvR.captureStream(5), mime ? {mimeType: mime, videoBitsPerSecond: 1500000} : undefined);
+        } catch (e) { rec = null; note.textContent = 'Video kaydı başlatılamadı.'; return; }
+        chunks = [];
+        rec.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+        rec.onstop = () => {
+            clearInterval(drawTimer); clearInterval(tickTimer);
+            badge.hidden = true; bRec.classList.remove('on'); bRecText.textContent = 'Kayıt başlat';
+            const type = /mp4/.test((rec && rec.mimeType) || mime || '') ? 'video/mp4' : 'video/webm';
+            const blob = new Blob(chunks, {type});
+            rec = null;
+            if (blob.size) finish(blob, /mp4/.test(type) ? 'mp4' : 'webm', code, 'VİDEO', cvR);
+        };
+        rec.start(1000); t0 = Date.now();
+        drawTimer = setInterval(() => paint(cvR, code), 200);
+        tickTimer = setInterval(tick, 500);
+        bRec.classList.add('on'); badge.hidden = false; note.textContent = ''; tick();
+    }
+    function stopRec() { if (rec && rec.state !== 'inactive') rec.stop(); }
+
+        const vw = document.createElement('div');
+    vw.className = 'viewer'; vw.id = 'capViewer';
+    vw.setAttribute('role', 'dialog'); vw.setAttribute('aria-modal', 'true'); vw.setAttribute('aria-label', 'Çekim önizleme');
+    vw.innerHTML = '<button type="button" class="viewer-nav prev" aria-label="Daha yeni çekim">‹</button><div class="viewer-box"><div class="viewer-media"></div><div class="viewer-bar"><div class="viewer-info"><span class="viewer-kind"></span><span class="viewer-code"></span></div><div class="viewer-actions"><button type="button" class="viewer-save"></button><button type="button" class="viewer-close">Kapat</button></div></div></div><button type="button" class="viewer-nav next" aria-label="Daha eski çekim">›</button>';
+    document.body.appendChild(vw);
+    const vMedia = vw.querySelector('.viewer-media'), vPrev = vw.querySelector('.prev'), vNext = vw.querySelector('.next');
+    vw.querySelector('.viewer-save').textContent = CFG.dev === 'PC' ? 'İndir' : 'Kaydet / Paylaş';
+    let cur = null, lastFocus = null;
+    const order = () => [...shots.children].map(x => x._it);
+    function show(it) {
+        cur = it; vMedia.replaceChildren();
+        let el;
+        if (it.kind === 'VİDEO') {
+            el = document.createElement('video'); el.controls = true; el.autoplay = true; el.playsInline = true; el.setAttribute('playsinline', ''); el.src = it.url;
+            el.addEventListener('loadedmetadata', () => {
+                if (!isFinite(el.duration)) {
+                    el.currentTime = 1e101;
+                    el.addEventListener('timeupdate', function f() { el.removeEventListener('timeupdate', f); el.currentTime = 0; });
+                }
+            });
+        } else { el = document.createElement('img'); el.src = it.url; el.alt = it.code; }
+        vMedia.appendChild(el);
+        vw.querySelector('.viewer-kind').textContent = it.kind;
+        vw.querySelector('.viewer-code').textContent = it.code;
+        const o = order(), i = o.indexOf(it);
+        vPrev.hidden = !o[i - 1]; vNext.hidden = !o[i + 1];
+    }
+    function openViewer(it) {
+        lastFocus = document.activeElement;
+        vw.classList.add('open'); document.body.style.overflow = 'hidden';
+        show(it); vw.querySelector('.viewer-close').focus();
+    }
+    function closeViewer() {
+        vw.classList.remove('open'); document.body.style.overflow = '';
+        const v = vMedia.querySelector('video');
+        if (v) { v.pause(); v.removeAttribute('src'); v.load(); }
+        vMedia.replaceChildren(); cur = null;
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    function step(d) { const o = order(), n = o[o.indexOf(cur) + d]; if (n) show(n); }
+    vw.addEventListener('click', e => { if (e.target === vw) closeViewer(); });
+    vw.querySelector('.viewer-close').addEventListener('click', closeViewer);
+    vw.querySelector('.viewer-save').addEventListener('click', () => { if (cur) saveItem(cur); });
+    vPrev.addEventListener('click', () => step(-1));
+    vNext.addEventListener('click', () => step(1));
+    window.addEventListener('keydown', e => {
+        if (!vw.classList.contains('open')) return;
+        if (e.key === 'Escape') { e.preventDefault(); closeViewer(); }
+        else if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && e.target.tagName !== 'VIDEO') { e.preventDefault(); step(e.key === 'ArrowLeft' ? -1 : 1); }
+    });
+
+    bPhoto.addEventListener('click', photo);
+    bRec.addEventListener('click', () => rec ? stopRec() : startRec());
+    setInterval(() => {
+        const ok = frameReady();
+        bPhoto.disabled = !ok;
+        bRec.disabled = rec ? false : !(ok && canRec);
+    }, 600);
+    window.addEventListener('beforeunload', e => { if (rec) { e.preventDefault(); e.returnValue = ''; } });
+    if (CFG.keys) window.addEventListener('keydown', e => {
+        const t = e.target;
+        if (t && (['INPUT', 'TEXTAREA', 'SELECT'].includes(t.tagName) || t.isContentEditable)) return;
+        if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+        if (e.key === 'p' || e.key === 'P') { if (!bPhoto.disabled) bPhoto.click(); }
+        else if (e.key === 'r' || e.key === 'R') { if (!bRec.disabled) bRec.click(); }
+    });
+})({img: 'mobileCameraStream', dev: 'MB', keys: false});
+</script>
+</body>
+</html>
